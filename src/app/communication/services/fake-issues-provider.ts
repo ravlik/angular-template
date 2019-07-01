@@ -11,7 +11,13 @@ export class FakeIssuesProvider extends FakeProvider<IIssue> {
     generateIssues(projectId: number): number[] {
         this._issuesStore[projectId] = [];
 
-        for (let i = 0; i <= +Math.random().toFixed() * 2; i++) {
+        let length = +Math.random().toFixed() * 2;
+
+        if (length < 2) {
+            length = 2;
+        }
+
+        for (let i = 0; i <= length; i++) {
             this._issuesStore[projectId].push(generateIssue(projectId, i));
         }
 
@@ -66,10 +72,6 @@ export class FakeIssuesProvider extends FakeProvider<IIssue> {
             map(() => true),
         );
     }
-
-    getItemsByIds(ids?: number[]): Observable<IIssue[]> {
-        throw new Error('Cant use get items by ids');
-    }
 }
 
 function generateIssue(projectId: number, id): IIssue {
@@ -79,3 +81,5 @@ function generateIssue(projectId: number, id): IIssue {
         projectId,
     };
 }
+
+

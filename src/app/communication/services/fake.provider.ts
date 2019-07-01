@@ -12,6 +12,9 @@ export abstract class FakeProvider<T extends IIdObject> {
     protected _store: { [key: number]: T } = {};
 
     getItemById(id): Observable<T> {
+        if (id == null || !this._store[id])
+            return throwError(`Item with ${id} not found`);
+
         return of(this._store[id]).pipe(delay(this.delay));
     }
 
@@ -37,9 +40,8 @@ export abstract class FakeProvider<T extends IIdObject> {
     }
 
     deleteItem(id: number): Observable<boolean> {
-        if (!id) {
+        if (!id || !this._store[id])
             return throwError(`Invalid item id - ${id}`);
-        }
 
         delete this._store[id];
 
@@ -51,13 +53,5 @@ export abstract class FakeProvider<T extends IIdObject> {
             .map(id => this._store[id]);
 
         return of(items).pipe(delay(this.delay));
-    }
-
-    getItemsByIds(ids?: number[]): Observable<T[]> {
-        if (!ids) {
-            ids = Object.keys(this._store) as any;
-        }
-
-        return of(ids.map(id => this._store[id])).pipe(delay(this.delay));
     }
 }

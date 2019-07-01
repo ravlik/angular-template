@@ -34,6 +34,6 @@ function generateProject(id, fakeProjectsProvider: FakeIssuesProvider): IProject
     return {
         id,
         name: `Project ${NAMES[(10 * Math.random()).toFixed()]} ${id}`,
-        issues: fakeProjectsProvider.generateIssues(id)
+        issues: fakeProjectsProvider instanceof FakeIssuesProvider ? fakeProjectsProvider.generateIssues(id) : [],
     };
 }

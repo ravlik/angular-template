@@ -3,8 +3,8 @@
   "compilerOptions": {
     "baseUrl": "src",
     "paths": {
-      "@shared/*": [
-        "app/shared/*"
+      "communication": [
+        "app/communication/index"
       ]
     },
     "outDir": "./dist/out-tsc",
