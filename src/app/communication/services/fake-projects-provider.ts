@@ -2,16 +2,17 @@ import { FakeProvider } from './fake.provider';
 import { Injectable } from '@angular/core';
 import { IProject } from '../models/project';
 import { FakeIssuesProvider } from './fake-issues-provider';
+import { IssuesProvider } from './issues-provider';
 
 @Injectable({ providedIn: 'root' })
 export class FakeProjectsProvider extends FakeProvider<IProject> {
     protected _delay = 500;
 
-    constructor(private fakeIssuesProvider: FakeIssuesProvider) {
+    constructor(private issuesProvider: IssuesProvider) {
         super();
 
         for (let i = 1; i <= 100; i++) {
-            this._store[i] = generateProject(i, fakeIssuesProvider);
+            this._store[i] = generateProject(i, issuesProvider);
         }
     }
 }
@@ -30,7 +31,7 @@ const NAMES = [
     'Thomas',
 ];
 
-function generateProject(id, fakeProjectsProvider: FakeIssuesProvider): IProject {
+function generateProject(id, fakeProjectsProvider: IssuesProvider): IProject {
     return {
         id,
         name: `Project ${NAMES[(10 * Math.random()).toFixed()]} ${id}`,
