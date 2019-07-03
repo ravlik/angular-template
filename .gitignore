@@ -45,3 +45,6 @@ testem.log
 Thumbs.db
 prerender.js.map
 server.js.map
+
+/docs
+/yml
