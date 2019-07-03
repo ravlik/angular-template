@@ -15,7 +15,7 @@ export abstract class FakeProvider<T extends IIdObject> {
         if (id == null || !this._store[id])
             return throwError(`Item with ${id} not found`);
 
-        return of(this._store[id]).pipe(delay(this.delay));
+        return this._wrapDataInObservable(this._store[id]);
     }
 
     createItem(item: T): Observable<T> {
@@ -26,7 +26,7 @@ export abstract class FakeProvider<T extends IIdObject> {
         item.id = Object.keys(this._store).length + 1;
         this._store[item.id] = item;
 
-        return of(this._store[item.id]).pipe(delay(this.delay));
+        return this._wrapDataInObservable(this._store[item.id]);
     }
 
     updateItem(item: T): Observable<T> {
@@ -36,7 +36,7 @@ export abstract class FakeProvider<T extends IIdObject> {
 
         this._store[item.id] = item;
 
-        return of(this._store[item.id]).pipe(delay(this.delay));
+        return this._wrapDataInObservable(this._store[item.id]);
     }
 
     deleteItem(id: number): Observable<boolean> {
@@ -45,13 +45,18 @@ export abstract class FakeProvider<T extends IIdObject> {
 
         delete this._store[id];
 
-        return of(true).pipe(delay(this.delay));
+        return this._wrapDataInObservable(true);
     }
 
     getItems(): Observable<T[]> {
         const items = Object.keys(this._store)
             .map(id => this._store[id]);
 
-        return of(items).pipe(delay(this.delay));
+        return this._wrapDataInObservable(items);
+    }
+
+    protected _wrapDataInObservable(data): Observable<any> {
+        return of(data).pipe(delay(this.delay));
+
     }
 }

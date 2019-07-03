@@ -1,8 +1,8 @@
 import { Injectable } from '@angular/core';
 import { IIssue } from '../models/issue';
-import { Observable, of, throwError } from 'rxjs';
+import { Observable, throwError } from 'rxjs';
 import { FakeProvider } from './fake.provider';
-import { delay, map, tap } from 'rxjs/operators';
+import { map, tap } from 'rxjs/operators';
 
 @Injectable({ providedIn: 'root' })
 export class FakeIssuesProvider extends FakeProvider<IIssue> {
@@ -26,14 +26,14 @@ export class FakeIssuesProvider extends FakeProvider<IIssue> {
 
     getItems(projectId?: number): Observable<IIssue[]> {
         if (Array.isArray(this._issuesStore[projectId])) {
-            return of(this._issuesStore[projectId]).pipe(delay(this.delay));
+            return this._wrapDataInObservable(this._issuesStore[projectId]);
         }
 
         return throwError({ message: 'Project not found' });
     }
 
     createItem(item: IIssue): Observable<IIssue> {
-        return super.createItem(item).pipe(
+        return this._wrapDataInObservable(item).pipe(
             map(() => this._issuesStore[item.projectId].push(item)),
             map(id => ({ ...item, id })),
         );
@@ -44,7 +44,7 @@ export class FakeIssuesProvider extends FakeProvider<IIssue> {
             return throwError({ message: 'Project not found' });
         }
 
-        return super.getItemById(id).pipe(
+        return this._wrapDataInObservable(id).pipe(
             map(() => this._issuesStore[projectId].find((item) => item.id === id)),
         );
     }
@@ -54,7 +54,7 @@ export class FakeIssuesProvider extends FakeProvider<IIssue> {
             return throwError({ message: 'Project not found' });
         }
 
-        return super.createItem(item).pipe(
+        return this._wrapDataInObservable(item).pipe(
             map(() => this._issuesStore[item.projectId].findIndex(i => i.id === item.id)),
             tap(index => this._issuesStore[item.projectId].splice(index, 1, item)),
             map((index) => this._issuesStore[item.projectId][index]),
@@ -66,7 +66,7 @@ export class FakeIssuesProvider extends FakeProvider<IIssue> {
             return throwError({ message: 'Project not found' });
         }
 
-        return super.deleteItem(id).pipe(
+        return this._wrapDataInObservable(id).pipe(
             map(() => this._issuesStore[projectId].findIndex(i => i.id === id)),
             tap(index => this._issuesStore[projectId].splice(index, 1)),
             map(() => true),
