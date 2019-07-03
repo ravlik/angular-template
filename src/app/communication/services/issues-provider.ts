@@ -1,9 +1,0 @@
-import { IIssue } from '../models/issue';
-import { Provider } from './provider';
-import { Observable } from 'rxjs';
-
-export abstract class IssuesProvider extends Provider<IIssue> {
-    abstract getItems(projectId?: number): Observable<IIssue[]>;
-
-    abstract getItemById(id: number, projectId?: number): Observable<IIssue>;
-}

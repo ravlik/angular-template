@@ -31,7 +31,8 @@
     "build:prerender": "npm run build:universal && npm run generate:prerender",
     "generate:prerender": "node prerender.js",
     "bundle-report": "ng build --stats-json && webpack-bundle-analyzer dist/stats.json",
-    "bundle-report:prod": "ng build --stats-json --prod && webpack-bundle-analyzer dist/stats.json"
+    "bundle-report:prod": "ng build --stats-json --prod && webpack-bundle-analyzer dist/stats.json",
+    "docs": " typedoc --out docs --module commonjs --includeDeclarations --ignoreCompilerErrors --excludeExternals  src/**/*.ts"
   },
   "private": true,
   "dependencies": {
@@ -91,6 +92,7 @@
     "ts-mocha": "6.0.0",
     "ts-node": "8.2.0",
     "tslint": "5.16.0",
+    "typedoc": "^0.14.2",
     "typescript": "3.4.5",
     "webpack-bundle-analyzer": "^3.3.2",
     "webpack-cli": "3.3.2",
