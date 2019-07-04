@@ -3,6 +3,7 @@ import { IIssue } from '../models/issue';
 import { Observable, throwError } from 'rxjs';
 import { FakeProvider } from './fake.provider';
 import { map, tap } from 'rxjs/operators';
+import { ExcludeId } from './provider';
 
 @Injectable({ providedIn: 'root' })
 export class FakeIssuesProvider extends FakeProvider<IIssue> {
@@ -20,8 +21,11 @@ export class FakeIssuesProvider extends FakeProvider<IIssue> {
         for (let i = 0; i <= length; i++) {
             this._issuesStore[projectId].push(generateIssue(projectId, i));
         }
-
         return this._issuesStore[projectId].map(i => i.id);
+    }
+
+    handleProjectCreate(id: number) {
+        this._issuesStore[id] = [];
     }
 
     getItems(projectId?: number): Observable<IIssue[]> {
@@ -32,9 +36,12 @@ export class FakeIssuesProvider extends FakeProvider<IIssue> {
         return throwError({ message: 'Project not found' });
     }
 
-    createItem(item: IIssue): Observable<IIssue> {
+    createItem(item: ExcludeId<IIssue>): Observable<IIssue> {
+        const store = this._issuesStore;
         return this._wrapDataInObservable(item).pipe(
-            map(() => this._issuesStore[item.projectId].push(item)),
+            map(() => store[item.projectId].push(item as any) - 1),
+            tap(id => store[item.projectId][id].id = id),
+            tap(id => store[item.projectId][id].created = Date.now()),
             map(id => ({ ...item, id })),
         );
     }
@@ -74,11 +81,28 @@ export class FakeIssuesProvider extends FakeProvider<IIssue> {
     }
 }
 
+const NAMES = [
+    'Mike',
+    'Rose',
+    'Harvy',
+    'Tim',
+    'Tom',
+    'Jeck',
+    'Scott',
+    'Jessica',
+    'Amber',
+    'Lorem',
+    'Thomas',
+];
+
 function generateIssue(projectId: number, id): IIssue {
     return {
         id,
-        name: `Issue ${id}`,
+        name: `Issue ${NAMES[(10 * Math.random()).toFixed()]} ${id}`,
         projectId,
+        created: Date.now(),
+        description: `Description for issue ${NAMES[(10 * Math.random()).toFixed()]} ${id}`,
+        inProgress: Math.random() > 0.5
     };
 }
 

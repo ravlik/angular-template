@@ -77,7 +77,7 @@ describe('Fake provider', () => {
     it('should be update', (done) => {
         const obj = { id: 1, name: 'test' };
 
-        expect(provider.createItem(obj).subscribe((data) => {
+        expect(provider.updateItem(obj).subscribe((data) => {
             expect(data).toBe(obj);
             provider.getItemById(obj.id).subscribe((item) => {
                 expect(item.name).toBe(obj.name);
