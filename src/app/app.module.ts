@@ -45,6 +45,7 @@ export function initLanguage(translateService: TranslateService): Function {
             useFactory: metaFactory,
             deps: [NGXTranslateService],
         }),
+        BrowserAnimationsModule,
         TransferHttpCacheModule,
         TransferHttpModule,
         HttpClientModule,

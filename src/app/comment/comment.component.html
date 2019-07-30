@@ -1,0 +1,12 @@
+<div class="comments">
+    <div class="title-wrapper">
+        <p>{{comment.text}}</p>
+
+        <button mat-button color="danger" (click)="handleClick()" *ngIf="showDelete">Delete</button>
+    </div>
+    <div class="comment-wrapper" *ngIf="showSubComment">
+        <textarea cols="30" rows="4" resize="none" [(ngModel)]="text" placeholder="Enter comment..."></textarea>
+        <button mat-button (click)="send()">Send</button>
+    </div>
+    <comment *ngFor="let item of comment.comments" [comment]="item" (delete)="deleteComment(item)"></comment>
+</div>

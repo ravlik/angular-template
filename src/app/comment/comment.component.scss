@@ -1,0 +1,46 @@
+:host {
+    display: block;
+    border-left: 1px solid #c8c8c8;
+
+    .title-wrapper {
+        display: flex;
+        justify-content: space-between;
+        background: #8080806e;
+        align-items: center;
+        padding: 10px 16px;
+        border-radius: 5px;
+        margin-bottom: 10px;
+
+        button {
+            color: red;
+            width: auto;
+        }
+    }
+
+    .comments,
+    .comment-wrapper {
+        margin-left: 20px;
+    }
+
+    p {
+        font-size: 1.2em;
+    }
+
+    ::ng-deep.mat-card-actions {
+        padding: 0 !important;
+    }
+
+    .comment-wrapper {
+        width: 300px;
+
+        textarea {
+            width: 100%;
+            border: none;
+            resize: none;
+
+        }
+
+        button {
+        }
+    }
+}

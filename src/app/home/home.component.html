@@ -1,11 +1,7 @@
-<select class="toolbar__lang" (change)="changeLang($event.target.value)">
-  <option *ngFor="let lang of langList$ | async"
-          [value]="lang.code"
-          [selected]="lang.code === currentLang">
-    {{ lang.name }}
-  </option>
-</select>
+<input [(ngModel)]="text" placeholder="Search">
 
-<h1>{{ "home.title" | translate }}</h1>
-<p>{{ "home.text" | translate }}</p>
-<a routerLink="/not-found">{{ "home.not-found" | translate }}</a>
+<comment [comment]="comment" [showDelete]="false" *ngIf="!text"></comment>
+
+<div class="comments" *ngIf="text">
+    <comment *ngFor="let item of comments" [comment]="item" [showDelete]="false" [showSubComment]="false"></comment>
+</div>
