@@ -22,7 +22,12 @@ export class CommentComponent {
     text: string;
 
     send() {
+        if (!this.text) {
+            return;
+        }
+
         this.comment.addComment(this.text);
+        this.text = '';
     }
 
     handleClick() {
