@@ -13,6 +13,7 @@ import { MetaLoader, MetaModule, MetaStaticLoader, PageTitlePositioning } from '
 import { TranslateService as NGXTranslateService } from '@ngx-translate/core';
 import { Observable } from 'rxjs';
 import { LANG_LIST } from './translate/translate.service';
+import { CommunicationModule } from 'communication';
 
 export function metaFactory(translate: NGXTranslateService): MetaLoader {
     return new MetaStaticLoader({
@@ -52,6 +53,7 @@ export function initLanguage(translateService: TranslateService): Function {
         AppRoutes,
         BrowserAnimationsModule,
         CookieModule.forRoot(),
+        CommunicationModule.forRoot()
     ],
     declarations: [AppComponent],
     providers: [

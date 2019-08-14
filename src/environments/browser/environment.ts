@@ -3,9 +3,10 @@
 // `ng build --env=prod` then `environment.prod.ts` will be used instead.
 // The list of which env maps to which file can be found in `.angular-cli.json`.
 
+// @ts-ignore
+import { BASE_DEBUG_ENVIRONMENT } from './base-environment';
+
 export const environment = {
-    production: false,
+    ...BASE_DEBUG_ENVIRONMENT,
     isServer: false,
-    // for prerender
-    host: 'http://localhost:4000',
 };

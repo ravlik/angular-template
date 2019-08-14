@@ -1,6 +1,7 @@
+// @ts-ignore
+import { BASE_PROD_ENVIRONMENT } from './base-environment';
+
 export const environment = {
-    production: true,
+    ...BASE_PROD_ENVIRONMENT,
     isServer: true,
-    // for prerender
-    host: 'http://localhost:4000',
 };
