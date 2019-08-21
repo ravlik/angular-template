@@ -1,24 +1,20 @@
-import { NgModule } from '@angular/core';
-import { TransferState } from '@angular/platform-browser';
-import { TranslateLoader, TranslateModule } from '@ngx-translate/core';
+import { ModuleWithProviders, NgModule } from '@angular/core';
 import { TranslateService } from '../translate.service';
-import { TranslateServerLoaderService } from './translate-server-loader.service';
+import { TranslateFileLoader } from '../translate-file.loader';
+import { ServerFileLoaderService } from './server-file.loader.service';
 
-export function translateFactory(transferState: TransferState): TranslateServerLoaderService {
-    return new TranslateServerLoaderService('./dist/assets/i18n', '.json', transferState);
-}
-
-@NgModule({
-    imports: [
-        TranslateModule.forRoot({
-            loader: {
-                provide: TranslateLoader,
-                useFactory: translateFactory,
-                deps: [TransferState],
-            },
-        }),
-    ],
-    providers: [TranslateService],
-})
+@NgModule()
 export class TranslateServerModule {
+    static forRoot(): ModuleWithProviders {
+        return {
+            ngModule: TranslateServerModule,
+            providers: [
+                TranslateService,
+                {
+                    provide: TranslateFileLoader,
+                    useClass: ServerFileLoaderService,
+                },
+            ],
+        };
+    }
 }

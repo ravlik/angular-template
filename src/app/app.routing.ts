@@ -6,7 +6,7 @@ const routes: Routes = [
     {
         path: '',
         canActivateChild: [MetaGuard],
-        children: [{ path: 'home', loadChildren: './home/home.module#HomeModule' }],
+        children: [{ path: 'dashboard', loadChildren: './dashboard/dashboard.module#DashboardModule' }],
     },
     {
         path: '',

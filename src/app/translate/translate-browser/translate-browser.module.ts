@@ -1,25 +1,20 @@
-import { NgModule } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
-import { TransferState } from '@angular/platform-browser';
-import { TranslateLoader, TranslateModule } from '@ngx-translate/core';
+import { ModuleWithProviders, NgModule } from '@angular/core';
 import { TranslateService } from '../translate.service';
-import { TranslateBrowserLoaderService } from './translate-browser-loader.service';
+import { TranslateFileLoader } from '../translate-file.loader';
+import { BrowserFileLoader } from './browser-file.loader';
 
-export function translateStaticLoader(http: HttpClient, transferState: TransferState): TranslateBrowserLoaderService {
-    return new TranslateBrowserLoaderService('/assets/i18n/', '.json', transferState, http);
-}
-
-@NgModule({
-    imports: [
-        TranslateModule.forRoot({
-            loader: {
-                provide: TranslateLoader,
-                useFactory: translateStaticLoader,
-                deps: [HttpClient, TransferState],
-            },
-        }),
-    ],
-    providers: [TranslateService],
-})
+@NgModule()
 export class TranslateBrowserModule {
+    static forRoot(): ModuleWithProviders {
+        return {
+            ngModule: TranslateBrowserModule,
+            providers: [
+                TranslateService,
+                {
+                    provide: TranslateFileLoader,
+                    useClass: BrowserFileLoader,
+                },
+            ],
+        };
+    }
 }

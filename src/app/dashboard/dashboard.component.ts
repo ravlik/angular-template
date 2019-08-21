@@ -5,9 +5,9 @@ import { UsersProvider, IUser } from 'communication';
 
 @Component({
     selector: 'app-home',
-    templateUrl: './home.component.html',
+    templateUrl: './dashboard.component.html',
 })
-export class HomeComponent implements OnInit {
+export class DashboardComponent implements OnInit {
     public langList$: Observable<ILang[]>;
     public currentLang: string;
     users: IUser[];
@@ -18,7 +18,7 @@ export class HomeComponent implements OnInit {
 
     ngOnInit(): void {
         this.langList$ = this._translateService.getLangList();
-        this.currentLang = this._translateService.getCurrentLang();
+        this.currentLang = this._translateService.language;
 
         this._usersProvider.getItems().subscribe(
             (users) => this.users = users

@@ -4,9 +4,9 @@
 // The list of which env maps to which file can be found in `.angular-cli.json`.
 
 // @ts-ignore
-import { BASE_DEBUG_ENVIRONMENT } from './base-environment';
+import { BASE_DEBUG_ENVIRONMENT, BROWSER_ENVIRONMENT } from './base-environment';
 
 export const environment = {
     ...BASE_DEBUG_ENVIRONMENT,
-    isServer: false,
+    ...BROWSER_ENVIRONMENT,
 };

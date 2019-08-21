@@ -15,7 +15,7 @@ import { TranslateServerModule } from './translate/translate-server';
         NoopAnimationsModule,
         ServerTransferStateModule,
         ModuleMapLoaderModule,
-        TranslateServerModule,
+        TranslateServerModule.forRoot(),
     ],
     bootstrap: [AppComponent],
     providers: [

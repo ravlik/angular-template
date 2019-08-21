@@ -19,7 +19,7 @@ export function getRequest(): any {
         AppModule,
         StateTransferInitializerModule,
         BrowserTransferStateModule,
-        TranslateBrowserModule,
+        TranslateBrowserModule.forRoot(),
         ServiceWorkerModule.register('/ngsw-worker.js', { enabled: false }),
     ],
     providers: [

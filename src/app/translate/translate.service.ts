@@ -11,47 +11,50 @@ export const LANG_LIST: ILang[] = [
     { code: 'ua', name: 'Українська', culture: 'uk-UA' },
     { code: 'en', name: 'English', culture: 'en-US' },
 ];
-const LANG_DEFAULT: ILang = LANG_LIST[0];
-const STORAGE_LANG_NAME: string = 'langCode';
+
+const LANG_DEFAULT: ILang = LANG_LIST[0],
+    STORAGE_LANG_NAME: string = 'langCode';
 
 @Injectable()
 export class TranslateService {
+    language: string;
+
+    private _services: NGXTranslateService[] = [];
+
     constructor(@Inject(PLATFORM_ID) private _platformId: Object,
                 @Inject(DOCUMENT) private _document: any,
                 @Inject(REQUEST) private _request: any,
-                @Inject(NGXTranslateService) private _translate: NGXTranslateService,
                 @Inject(MetaService) private _meta: MetaService,
                 @Inject(REQUEST) private _req: any,
                 @Inject(UniversalStorage) private _appStorage: Storage) {
     }
 
-    public initLanguage(): Promise<any> {
-        return new Promise((resolve: Function) => {
-            this._translate.addLangs(LANG_LIST.map((lang: ILang) => lang.code));
-            const language: ILang = this._getLanguage();
-            if (language) {
-                this._translate.setDefaultLang(language.code);
-            } else {
-                this._translate.setDefaultLang(LANG_DEFAULT.code);
-            }
-            this._setLanguage(language);
-            resolve();
-        });
+    async initLanguage(): Promise<any> {
+        const language: ILang = this._getLanguage();
+
+        for (const service of this._services) {
+            initService(service, language);
+        }
+
+        this._setLanguage(language);
     }
 
     private _getLanguage(): ILang {
         let language: ILang = this._getFindLang(this._appStorage.getItem(STORAGE_LANG_NAME));
-        if (language) {
+
+        if (language)
             return language;
-        }
-        if (isPlatformBrowser(this._platformId)) {
-            language = this._getFindLang(this._translate.getBrowserLang());
-        }
+
+
+        if (isPlatformBrowser(this._platformId))
+            language = this._getFindLang(getBrowserLang());
+
         if (isPlatformServer(this._platformId)) {
             try {
                 const reqLangList: string[] = this._request.headers['accept-language']
                     .split(';')[0]
                     .split(',');
+
                 language = LANG_LIST.find(
                     (lang: ILang) =>
                         reqLangList.indexOf(lang.code) !== -1 || reqLangList.indexOf(lang.culture) !== -1,
@@ -60,8 +63,10 @@ export class TranslateService {
                 language = LANG_DEFAULT;
             }
         }
+
+
         language = language || LANG_DEFAULT;
-        this._appStorage.setItem(STORAGE_LANG_NAME, language.code);
+        this._appStorage.setItem(STORAGE_LANG_NAME, language.code); // todo
         return language;
     }
 
@@ -69,27 +74,70 @@ export class TranslateService {
         return code ? LANG_LIST.find((lang: ILang) => lang.code === code) : null;
     }
 
-    private _setLanguage(lang: ILang): void {
-        this._translate.use(lang.code).subscribe(() => {
-            this._meta.setTag('og:locale', lang.culture);
-            this._document.documentElement.lang = lang.code;
-        });
+    private _setLanguage({ code, culture }: ILang): void {
+        for (const service of this._services) {
+            service.use(code);
+        }
+
+        this._meta.setTag('og:locale', culture);
+        this._document.documentElement.lang = code;
+        this.language = code;
     }
 
-    public changeLang(code: string): void {
+    changeLang(code: string): void {
         const lang: ILang = this._getFindLang(code);
-        if (!lang || lang.code === this._translate.currentLang) {
+        if (!lang || lang.code === this.language) {
             return;
         }
+
         this._appStorage.setItem(STORAGE_LANG_NAME, lang.code);
         this._setLanguage(lang);
     }
 
-    public getLangList(): Observable<ILang[]> {
+    getLangList(): Observable<ILang[]> {
         return of(LANG_LIST);
     }
 
-    public getCurrentLang(): string {
-        return this._translate.currentLang;
+    register(translateService: NGXTranslateService) {
+        this._services.push(translateService);
+
+        const language: ILang = this._getLanguage();
+        initService(translateService, language);
+
+        translateService.use((language || LANG_DEFAULT).code).subscribe(console.log, console.error);
     }
+}
+
+function initService(service: NGXTranslateService, language: ILang) {
+    service.addLangs(LANG_LIST.map((lang: ILang) => lang.code));
+    service.setDefaultLang((language || LANG_DEFAULT).code);
+}
+
+/**
+ * Returns the language code name from the browser, e.g. "de"
+ * source: @ngx-translate
+ * @returns string
+ */
+function getBrowserLang() {
+    const navigator: any = window && window.navigator;
+
+    if (!navigator)
+        return;
+
+    const browserLang = navigator.language || navigator.browserLanguage || navigator.userLanguage;
+
+    return normalizeBrowserLang(browserLang);
+}
+
+
+function normalizeBrowserLang(lang) {
+    if (lang.indexOf('-') !== -1) {
+        lang = lang.split('-')[0];
+    }
+
+    if (lang.indexOf('_') !== -1) {
+        lang = lang.split('_')[0];
+    }
+
+    return lang;
 }

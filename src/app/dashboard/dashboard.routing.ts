@@ -1,10 +1,10 @@
-import { HomeComponent } from './home.component';
+import { DashboardComponent } from './dashboard.component';
 import { Routes, RouterModule } from '@angular/router';
 
 const routes: Routes = [
     {
         path: '',
-        component: HomeComponent,
+        component: DashboardComponent,
         data: {
             meta: {
                 title: 'home.title',

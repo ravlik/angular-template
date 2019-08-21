@@ -16,8 +16,7 @@ export class CommunicationModule {
     }
 }
 
-
-function registerService(provide, mockedService, realService) {
+export function registerService(provide, mockedService, realService) {
     return {
         provide,
         useClass: environment.useMocks ? mockedService : realService,
