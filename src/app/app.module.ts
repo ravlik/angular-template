@@ -27,7 +27,7 @@ export function metaFactory(translate: NGXTranslateService): MetaLoader {
             description: 'Default description',
             'og:site_name': 'App site Universal',
             'og:type': 'website',
-            'og:locale': 'ru_RU',
+            'og:locale': 'uk_UA',
             'og:locale:alternate': LANG_LIST
                 .map((lang: any) => lang.culture)
                 .toString(),

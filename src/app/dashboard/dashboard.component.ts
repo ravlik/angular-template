@@ -20,9 +20,7 @@ export class DashboardComponent implements OnInit {
         this.langList$ = this._translateService.getLangList();
         this.currentLang = this._translateService.language;
 
-        this._usersProvider.getItems().subscribe(
-            (users) => this.users = users
-        );
+        this._usersProvider.getItems();
     }
 
     public changeLang(code: string): void {

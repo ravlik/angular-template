@@ -2,7 +2,7 @@ import { Observable } from 'rxjs';
 import { IIdObject } from '../../models/id.object';
 
 export type ExcludeId<T> = {
-    [P in Exclude<keyof T, keyof IIdObject>]: T[P]
+    [P in Exclude<keyof T, keyof IIdObject>]?: T[P]
 };
 
 export abstract class Provider<T extends IIdObject> {

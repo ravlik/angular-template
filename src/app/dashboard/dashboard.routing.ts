@@ -1,9 +1,11 @@
 import { DashboardComponent } from './dashboard.component';
 import { Routes, RouterModule } from '@angular/router';
+import { MetaGuard } from '@ngx-meta/core';
 
-const routes: Routes = [
+export const routes: Routes = [
     {
         path: '',
+        canActivate: [MetaGuard],
         component: DashboardComponent,
         data: {
             meta: {
