@@ -10,4 +10,10 @@ describe(`test work ${page} with ssr`, () => {
         body = await request(url);
         return expect(body.includes('a')).to.equal(true);
     });
+
+    it('Should be translated', async () => {
+        body = await request(url);
+        return expect(body.includes('home.title')).to.equal(false);
+    });
+
 });

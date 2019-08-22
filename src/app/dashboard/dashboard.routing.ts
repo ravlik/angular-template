@@ -15,4 +15,4 @@ const routes: Routes = [
     },
 ];
 
-export const HomeRoutes = RouterModule.forChild(routes);
+export const DashboardRoutes = RouterModule.forChild(routes);
