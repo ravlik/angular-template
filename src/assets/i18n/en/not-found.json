@@ -1,6 +1,10 @@
 {
+    "meta": {
+        "title": "Not found",
+        "description": "Not found description"
+    },
     "not-found": {
-        "title": "Not Found",
+        "title": "Not found",
         "text": "Page Not Found",
         "home": "Home"
     }

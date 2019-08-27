@@ -8,6 +8,9 @@
             ],
             "environment": [
                 "environments/environment"
+            ],
+            "meta": [
+                "app/meta/meta"
             ]
         },
         "outDir": "./dist/out-tsc",

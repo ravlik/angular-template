@@ -1,6 +1,10 @@
 {
+    "meta": {
+        "title": "Dashboard",
+        "description": "Dashboard description"
+    },
     "home": {
-        "title": "Home page",
+        "title": "Dashboard",
         "text": "Angular template",
         "not-found": "Not found"
     }

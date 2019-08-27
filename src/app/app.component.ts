@@ -1,5 +1,4 @@
 import { Component } from '@angular/core';
-import { MetaService } from '@ngx-meta/core';
 
 @Component({
     selector: 'app-root',
@@ -9,7 +8,5 @@ import { MetaService } from '@ngx-meta/core';
         '',
 })
 export class AppComponent {
-    constructor(private readonly meta: MetaService) {
-        this.meta.setTag('og:title', 'Home');
-    }
+
 }

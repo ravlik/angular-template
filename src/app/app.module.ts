@@ -9,31 +9,9 @@ import { TranslateService } from './translate';
 import { AppRoutes } from './app.routing';
 import { AppComponent } from './app.component';
 import { UniversalStorage } from './storage/universal.storage';
-import { MetaLoader, MetaModule, MetaStaticLoader, PageTitlePositioning } from '@ngx-meta/core';
-import { TranslateService as NGXTranslateService } from '@ngx-translate/core';
-import { Observable } from 'rxjs';
-import { LANG_LIST } from './translate/translate.service';
 import { CommunicationModule } from 'communication';
 import { Translate } from './translate/translate';
-
-export function metaFactory(translate: NGXTranslateService): MetaLoader {
-    return new MetaStaticLoader({
-        callback: (key: string): Observable<string | Object> => translate.get(key),
-        pageTitlePositioning: PageTitlePositioning.PrependPageTitle,
-        pageTitleSeparator: ' | ',
-        applicationName: 'App Universal',
-        defaults: {
-            title: 'Default page title',
-            description: 'Default description',
-            'og:site_name': 'App site Universal',
-            'og:type': 'website',
-            'og:locale': 'uk_UA',
-            'og:locale:alternate': LANG_LIST
-                .map((lang: any) => lang.culture)
-                .toString(),
-        },
-    });
-}
+import { Meta } from 'meta';
 
 export function initLanguage(translateService: TranslateService): Function {
     return (): Promise<any> => translateService.initLanguage();
@@ -42,11 +20,7 @@ export function initLanguage(translateService: TranslateService): Function {
 @NgModule({
     imports: [
         BrowserModule.withServerTransition({ appId: 'my-app' }),
-        MetaModule.forRoot({
-            provide: MetaLoader,
-            useFactory: metaFactory,
-            deps: [NGXTranslateService],
-        }),
+        Meta.forRoot(),
         TransferHttpCacheModule,
         TransferHttpModule,
         HttpClientModule,
@@ -61,7 +35,12 @@ export function initLanguage(translateService: TranslateService): Function {
     providers: [
         CookieService,
         UniversalStorage,
-        { provide: APP_INITIALIZER, useFactory: initLanguage, multi: true, deps: [TranslateService] },
+        {
+            provide: APP_INITIALIZER,
+            useFactory: initLanguage,
+            multi: true,
+            deps: [TranslateService],
+        },
     ],
 })
 export class AppModule {

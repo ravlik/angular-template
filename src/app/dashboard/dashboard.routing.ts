@@ -7,13 +7,6 @@ export const routes: Routes = [
         path: '',
         canActivate: [MetaGuard],
         component: DashboardComponent,
-        data: {
-            meta: {
-                title: 'home.title',
-                description: 'home.text',
-                override: true,
-            },
-        },
     },
 ];
 
