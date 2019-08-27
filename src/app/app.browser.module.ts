@@ -6,7 +6,6 @@ import { AppComponent } from './app.component';
 import { AppModule } from './app.module';
 import { ServiceWorkerModule } from '@angular/service-worker';
 import { StateTransferInitializerModule } from '@nguniversal/common';
-// import { ServiceWorkerModule } from '@angular/service-worker';
 
 // the Request object only lives on the server
 export function getRequest(): any {
@@ -20,7 +19,7 @@ export function getRequest(): any {
         StateTransferInitializerModule,
         BrowserTransferStateModule,
         TranslateBrowserModule.forRoot(),
-        ServiceWorkerModule.register('/ngsw-worker.js', { enabled: false }),
+        ServiceWorkerModule.register('/ngsw-worker.js', { enabled: true }),
     ],
     providers: [
         {
