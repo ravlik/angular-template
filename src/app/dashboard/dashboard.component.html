@@ -1,9 +1,9 @@
 <select class="toolbar__lang" (change)="changeLang($event.target.value)">
-  <option *ngFor="let lang of langList$ | async"
-          [value]="lang.code"
-          [selected]="lang.code === currentLang">
-    {{ lang.name }}
-  </option>
+    <option *ngFor="let lang of langList$ | async"
+            [value]="lang.code"
+            [selected]="lang.code === currentLang">
+        {{ lang.name }}
+    </option>
 </select>
 
 <mat-icon aria-hidden="false" aria-label="Example home icon">home</mat-icon>
@@ -11,4 +11,7 @@
 <p>{{ "home.text" | translate }}</p>
 <a routerLink="/not-found">{{ "home.not-found" | translate }}</a>
 
-<pre>{{users | json}}</pre>
+<div>Config</div>
+<pre>{{config | json}}</pre>
+
+<pre>{{users | async | json}}</pre>

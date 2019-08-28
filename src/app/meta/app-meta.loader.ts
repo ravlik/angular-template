@@ -29,7 +29,10 @@ export class MetaSettingsProvider {
 export class AppMetaLoader extends MetaStaticLoader {
     constructor(translate: NGXTranslateService, @Inject(MetaSettingsProvider) settings: Partial<MetaSettings>) {
         super(MetaSettingsProvider.merge({
-            callback: (key: string): Observable<string | Object> => translate.get(key),
+            callback: (key: string): Observable<string | Object> => {
+                console.log('translate.get(key)', key, translate.instant(key));
+                return translate.get(key);
+            },
             ...settings,
         }));
     }

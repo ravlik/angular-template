@@ -12,6 +12,8 @@ import { UniversalStorage } from './storage/universal.storage';
 import { CommunicationModule } from 'communication';
 import { Translate } from './translate/translate';
 import { Meta } from 'meta';
+import { ConfigModule } from 'config';
+import { AppConfig } from './app.config';
 
 export function initLanguage(translateService: TranslateService): Function {
     return (): Promise<any> => translateService.initLanguage();
@@ -28,13 +30,18 @@ export function initLanguage(translateService: TranslateService): Function {
         AppRoutes,
         BrowserAnimationsModule,
         CookieModule.forRoot(),
-        CommunicationModule.forRoot(),
         Translate.localize('main'),
+        CommunicationModule.forRoot(AppConfig),
+        ConfigModule.configure({
+            path: 'config/config.json',
+            configProvider: AppConfig,
+        }),
     ],
     declarations: [AppComponent],
     providers: [
         CookieService,
         UniversalStorage,
+        AppConfig,
         {
             provide: APP_INITIALIZER,
             useFactory: initLanguage,
