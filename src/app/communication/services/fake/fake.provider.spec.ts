@@ -1,5 +1,6 @@
 import { FakeProvider } from './fake.provider';
 import { Observer } from 'rxjs';
+import { IUser } from 'communication';
 
 describe('Fake provider', () => {
     let provider: FakeProvider<any>;
@@ -12,6 +13,10 @@ describe('Fake provider', () => {
                 for (let id = 1; id <= 100; id++) {
                     this._store[id] = { id };
                 }
+            }
+
+            protected _getItems(): IUser[] {
+                return new Array(100).fill('').map((i, id) => ({ id, name: `Name ${id}` }));
             }
         };
     });
@@ -32,6 +37,14 @@ describe('Fake provider', () => {
     it('getItems successfully', (done) => {
         expect(provider.getItems().subscribe((items) => {
             expect(items.length > 0).toBe(true);
+            done();
+        }));
+    });
+
+    // getItems not successfully
+    it('getItems not successfully', (done) => {
+        expect(provider.getItems().subscribe((items) => {
+            expect(items.length == 0 || items.length < 0).toBe(false);
             done();
         }));
     });
