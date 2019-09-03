@@ -2,5 +2,9 @@
     "version": 0,
     "http": {
         "users": "http://fakerestapi.azurewebsites.net/api/Users"
+    },
+    "sentry": {
+        "enable": true,
+        "dsn": "https://8fc84f52de144940b61995ef82864331@sentry.io/1548969"
     }
 }

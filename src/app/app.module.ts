@@ -1,4 +1,4 @@
-import { APP_INITIALIZER, NgModule } from '@angular/core';
+import { APP_INITIALIZER, NgModule, ErrorHandler } from '@angular/core';
 import { RouterModule } from '@angular/router';
 import { HttpClientModule } from '@angular/common/http';
 import { BrowserModule } from '@angular/platform-browser';
@@ -14,6 +14,8 @@ import { Translate } from './translate/translate';
 import { Meta } from 'meta';
 import { ConfigModule } from 'config';
 import { AppConfig } from './app.config';
+
+import { SentryErrorHandler } from './sentry-error-handler';
 
 export function initLanguage(translateService: TranslateService): Function {
     return (): Promise<any> => translateService.initLanguage();
@@ -47,6 +49,10 @@ export function initLanguage(translateService: TranslateService): Function {
             useFactory: initLanguage,
             multi: true,
             deps: [TranslateService],
+        },
+        { 
+            provide: ErrorHandler,
+            useClass: SentryErrorHandler
         },
     ],
 })
