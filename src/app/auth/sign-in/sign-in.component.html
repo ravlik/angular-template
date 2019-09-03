@@ -1,0 +1,21 @@
+<h2>Sign in page</h2>
+
+<div class="wrapper">
+    <mat-card class="form-container">
+        <form [formGroup]="form" (ngSubmit)="signIn()">
+            <mat-form-field class="input-field">
+                <input matInput type="text" placeholder="Username" formControlName="username">
+            </mat-form-field>
+            <mat-error>{{errors.username}}</mat-error>
+            <mat-form-field class="input-field">
+                <input matInput type="password" placeholder="Password" name="password" formControlName="password">
+            </mat-form-field>
+            <mat-error>{{errors.password}}</mat-error>
+            <div class="navigation">
+                <button>Sign in</button>
+                <span routerLink="/auth/sign-up" class="link-navigation">Registration</span>
+            </div>
+
+        </form>
+    </mat-card>
+</div>

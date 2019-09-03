@@ -11,6 +11,10 @@ const routes: Routes = [
         loadChildren: './dashboard/dashboard.module#DashboardModule',
     },
     {
+        path: 'auth',
+        loadChildren: './auth/auth.module#AuthModule',
+    },
+    {
         path: '**',
         loadChildren: './not-found/not-found.module#NotFoundModule',
     },
