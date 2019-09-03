@@ -10,8 +10,9 @@ export class SentryErrorHandler implements ErrorHandler {
     }
 
     handleError(error) {
-        if (this._getDsnUrl(this._communicationConfig)) {
-            Sentry.init({dsn: this._getDsnUrl(this._communicationConfig)});
+        const dsnUrl = this._getDsnUrl(this._communicationConfig);
+        if (dsnUrl) {
+        Sentry.init({dsn: dsnUrl});
         const eventId = Sentry.captureException(error.originalError || error);
         Sentry.showReportDialog({ eventId });
         }
