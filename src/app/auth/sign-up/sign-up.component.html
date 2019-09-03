@@ -15,9 +15,9 @@
                 <input matInput type="password" placeholder="Confirm password" name="passwordConfirm" formControlName="passwordConfirm">
             </mat-form-field>
             <mat-error>{{errors.passwordConfirm}}</mat-error>
-            <div class="navigation">
+            <div class="form-buttons">
                 <button>Sign un</button>
-                <span routerLink="/auth/sign-in" class="link-navigation">Login</span>
+                <a routerLink="/sign-in" class="link">Login</a>
             </div>
         </form>
     </mat-card>

@@ -1,13 +1,14 @@
-import { Component } from '@angular/core';
-import { FormControl, FormGroup, Validators } from '@angular/forms';
+import { Component, Inject } from '@angular/core';
+import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
 import { FormComponent } from '../form.component';
 
 @Component({
     selector: 'app-sign-in',
     templateUrl: './sign-in.component.html',
-    styleUrls: ['./sign-in.component.scss'],
+    styleUrls: ['../auth.scss'],
 })
 export class SignInComponent extends FormComponent {
+    form: FormGroup;
 
     protected errorsMessages = {
         username: {
@@ -19,12 +20,12 @@ export class SignInComponent extends FormComponent {
         },
     };
 
-    constructor() {
+    constructor(@Inject(FormBuilder) private formBuilder: FormBuilder) {
         super();
     }
 
     protected createForm(): FormGroup {
-        return new FormGroup({
+        return this.formBuilder.group({
             username: new FormControl('', Validators.required),
             password: new FormControl('', [
                 Validators.required,

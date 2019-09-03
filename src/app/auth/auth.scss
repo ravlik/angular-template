@@ -12,23 +12,25 @@ h2 {
     .input-field {
         width: 100%;
     }
+
+    .form-buttons {
+        display: flex;
+        flex-direction: column;
+    }
 }
 
 .form-container {
     width: 40%;
 }
 
-.input-field{
+.input-field {
     margin-bottom: 5px;
 }
 
-.navigation{
-    display: flex;
-    flex-direction: column;
-}
-.link-navigation{
+.link {
     padding: 5px;
     margin: 15px 0;
+    display: block;
     text-align: center;
     cursor: pointer;
 }

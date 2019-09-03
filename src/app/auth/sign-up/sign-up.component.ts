@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, Inject } from '@angular/core';
 import { FormComponent } from '../form.component';
 import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
 import { MustMatch } from '../password.validator';
@@ -6,7 +6,7 @@ import { MustMatch } from '../password.validator';
 @Component({
     selector: 'app-sign-up',
     templateUrl: './sign-up.component.html',
-    styleUrls: ['./sign-up.component.scss'],
+    styleUrls: ['../auth.scss'],
 })
 export class SignUpComponent extends FormComponent {
     form: FormGroup;
@@ -25,12 +25,12 @@ export class SignUpComponent extends FormComponent {
         },
     };
 
-    constructor(private formBuilder: FormBuilder) {
+    constructor(@Inject(FormBuilder) private formBuilder: FormBuilder) {
         super();
     }
 
     protected createForm(): FormGroup {
-        this.form = this.formBuilder.group({
+        return this.formBuilder.group({
             username: new FormControl('', Validators.required),
             password: new FormControl(null, [
                 Validators.required,
@@ -38,7 +38,6 @@ export class SignUpComponent extends FormComponent {
             ]),
             passwordConfirm: new FormControl(null, Validators.required),
         }, { validator: MustMatch('password', 'passwordConfirm') });
-        return this.form;
     }
 
     ngOnInit(): void {
