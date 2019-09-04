@@ -12,7 +12,7 @@ export class SentryErrorHandler implements ErrorHandler {
 
     handleError(error) {
         if (!this.isInitDone) {
-            this._isInited();
+            this._isInitialized();
             this.handleError(error);
         } else {
             const eventId = Sentry.captureException(error.originalError || error);
@@ -20,7 +20,7 @@ export class SentryErrorHandler implements ErrorHandler {
         }
     }
 
-    private _isInited(): boolean {
+    private _isInitialized(): boolean {
         if (!this._communicationConfig.sentry.enable ||
             !this._communicationConfig.sentry.dsn ||
             this._communicationConfig === null ||
