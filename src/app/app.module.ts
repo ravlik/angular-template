@@ -12,8 +12,6 @@ import { UniversalStorage } from './storage/universal.storage';
 import { CommunicationModule } from 'communication';
 import { Translate } from './translate/translate';
 import { Meta } from 'meta';
-import { ServiceWorkerModule } from '@angular/service-worker';
-import { environment } from 'environments/browser/environment';
 
 export function initLanguage(translateService: TranslateService): Function {
     return (): Promise<any> => translateService.initLanguage();
@@ -32,7 +30,6 @@ export function initLanguage(translateService: TranslateService): Function {
         CookieModule.forRoot(),
         CommunicationModule.forRoot(),
         Translate.localize('main'),
-        ServiceWorkerModule.register('/ngsw-worker.js', { enabled: environment.production }),
     ],
     declarations: [AppComponent],
     providers: [
