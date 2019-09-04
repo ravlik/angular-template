@@ -23,8 +23,6 @@ export class DashboardComponent implements OnInit {
         this.currentLang = this._translateService.language;
 
         this.users = this._usersProvider.getItems();
-
-        throw new Error('test error');
     }
 
     public changeLang(code: string): void {

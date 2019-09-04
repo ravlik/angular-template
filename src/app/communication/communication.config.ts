@@ -1,9 +1,7 @@
+import { SentryConfig } from 'app/sentry/sentry.module';
+
 export interface HttpConfig {
     users: string;
-}
-
-export interface SentryConfig {
-    dsn: string;
 }
 
 export class CommunicationConfig {

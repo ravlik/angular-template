@@ -14,8 +14,7 @@ import { Translate } from './translate/translate';
 import { Meta } from 'meta';
 import { ConfigModule } from 'config';
 import { AppConfig } from './app.config';
-
-import { SentryErrorHandler } from './sentry-error-handler';
+import { SentryErrorHandler } from './sentry/sentry-error-handler';
 
 export function initLanguage(translateService: TranslateService): Function {
     return (): Promise<any> => translateService.initLanguage();
