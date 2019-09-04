@@ -2,7 +2,7 @@
 
 <div class="wrapper">
     <mat-card class="form-container">
-        <form [formGroup]="form" (ngSubmit)="signIn()">
+        <form [formGroup]="form" (ngSubmit)="login()">
             <mat-form-field class="input-field">
                 <input matInput type="text" placeholder="Username" formControlName="username">
             </mat-form-field>
@@ -13,7 +13,7 @@
             <mat-error>{{errors.password}}</mat-error>
             <div class="form-buttons">
                 <button>Sign in</button>
-                <a routerLink="/sign-up" class="link">Registration</a>
+                <a routerLink="/register" class="link">Registration</a>
             </div>
 
         </form>

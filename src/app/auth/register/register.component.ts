@@ -1,14 +1,14 @@
-import { Component, Inject } from '@angular/core';
+import { Component } from '@angular/core';
 import { FormComponent } from '../form.component';
 import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
 import { MustMatch } from '../password.validator';
 
 @Component({
-    selector: 'app-sign-up',
-    templateUrl: './sign-up.component.html',
+    selector: 'app-register',
+    templateUrl: './register.component.html',
     styleUrls: ['../auth.scss'],
 })
-export class SignUpComponent extends FormComponent {
+export class RegisterComponent extends FormComponent {
     form: FormGroup;
 
     protected errorsMessages = {
@@ -25,7 +25,7 @@ export class SignUpComponent extends FormComponent {
         },
     };
 
-    constructor(@Inject(FormBuilder) private formBuilder: FormBuilder) {
+    constructor(private formBuilder: FormBuilder) {
         super();
     }
 
@@ -44,7 +44,7 @@ export class SignUpComponent extends FormComponent {
         super.ngOnInit();
     }
 
-    signUp() {
+    registration() {
         this._handleStatusChange(this.form);
         if (this.form.valid) {
             console.log('data from registration', this.form.value);

@@ -1,7 +1,7 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { SignInComponent } from './sign-in/sign-in.component';
-import { SignUpComponent } from './sign-up/sign-up.component';
+import { LoginComponent } from './login/login.component';
+import { RegisterComponent } from './register/register.component';
 import { AuthRouting } from './auth-routing';
 import { MatFormFieldModule } from '@angular/material';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
@@ -10,8 +10,8 @@ import { MatCardModule } from '@angular/material/card';
 
 @NgModule({
     declarations: [
-        SignInComponent,
-        SignUpComponent,
+        LoginComponent,
+        RegisterComponent,
     ],
     imports: [
         CommonModule,

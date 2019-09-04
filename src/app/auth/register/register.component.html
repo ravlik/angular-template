@@ -1,8 +1,8 @@
-<h2>Sign Up page</h2>
+<h2>Registration page</h2>
 
 <div class="wrapper">
     <mat-card class="form-container">
-        <form [formGroup]="form" (ngSubmit)="signUp()">
+        <form [formGroup]="form" (ngSubmit)="registration()">
             <mat-form-field class="input-field">
                 <input matInput type="text" placeholder="Username" formControlName="username">
             </mat-form-field>
@@ -17,7 +17,7 @@
             <mat-error>{{errors.passwordConfirm}}</mat-error>
             <div class="form-buttons">
                 <button>Sign un</button>
-                <a routerLink="/sign-in" class="link">Login</a>
+                <a routerLink="/login" class="link">Login</a>
             </div>
         </form>
     </mat-card>

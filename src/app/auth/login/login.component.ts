@@ -1,13 +1,13 @@
-import { Component, Inject } from '@angular/core';
+import { Component } from '@angular/core';
 import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
 import { FormComponent } from '../form.component';
 
 @Component({
-    selector: 'app-sign-in',
-    templateUrl: './sign-in.component.html',
+    selector: 'app-login',
+    templateUrl: './login.component.html',
     styleUrls: ['../auth.scss'],
 })
-export class SignInComponent extends FormComponent {
+export class LoginComponent extends FormComponent {
     form: FormGroup;
 
     protected errorsMessages = {
@@ -20,7 +20,7 @@ export class SignInComponent extends FormComponent {
         },
     };
 
-    constructor(@Inject(FormBuilder) private formBuilder: FormBuilder) {
+    constructor(private formBuilder: FormBuilder) {
         super();
     }
 
@@ -34,7 +34,7 @@ export class SignInComponent extends FormComponent {
         });
     }
 
-    signIn() {
+    login() {
         this._handleStatusChange(this.form);
         if (this.form.valid) {
             console.log('after submit', this.form.value);
