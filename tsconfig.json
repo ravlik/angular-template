@@ -17,6 +17,9 @@
             ],
             "config": [
                 "app/config/index"
+            ],
+            "notifier": [
+                "app/notifier/index"
             ]
         },
         "outDir": "./dist/out-tsc",
