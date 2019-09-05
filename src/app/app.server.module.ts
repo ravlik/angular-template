@@ -5,7 +5,8 @@ import { ModuleMapLoaderModule } from '@nguniversal/module-map-ngfactory-loader'
 import { AppComponent } from './app.component';
 import { AppModule } from './app.module';
 import { CookieBackendService, CookieService } from '@gorniv/ngx-universal';
-import { TranslateServerModule } from './translate/translate-server';
+import { ServerFileModule } from './file-loader/server/server-file.module';
+import { TranslateService } from './translate';
 
 @NgModule({
     imports: [
@@ -15,11 +16,15 @@ import { TranslateServerModule } from './translate/translate-server';
         NoopAnimationsModule,
         ServerTransferStateModule,
         ModuleMapLoaderModule,
-        TranslateServerModule.forRoot(),
+        ServerFileModule.forRoot(),
     ],
     bootstrap: [AppComponent],
     providers: [
-        { provide: CookieService, useClass: CookieBackendService },
+        TranslateService,
+        {
+            provide: CookieService,
+            useClass: CookieBackendService,
+        },
     ],
 })
 export class AppServerModule {

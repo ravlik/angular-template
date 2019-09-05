@@ -1,17 +1,15 @@
 import { ModuleWithProviders, NgModule } from '@angular/core';
-import { TranslateService } from '../translate.service';
-import { TranslateFileLoader } from '../translate-file.loader';
 import { BrowserFileLoader } from './browser-file.loader';
+import { FileLoader } from 'file-loader';
 
 @NgModule()
-export class TranslateBrowserModule {
+export class BrowserFileModule {
     static forRoot(): ModuleWithProviders {
         return {
-            ngModule: TranslateBrowserModule,
+            ngModule: BrowserFileModule,
             providers: [
-                TranslateService,
                 {
-                    provide: TranslateFileLoader,
+                    provide: FileLoader,
                     useClass: BrowserFileLoader,
                 },
             ],

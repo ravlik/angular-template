@@ -1,3 +1,3 @@
 export function getLocalizationFile(lang: string, module: string) {
-    return `i18n/${lang}/${module}.json`;
+    return `assets/i18n/${lang}/${module}.json`;
 }

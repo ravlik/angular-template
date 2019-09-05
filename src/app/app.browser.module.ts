@@ -1,12 +1,13 @@
 import { NgModule } from '@angular/core';
 import { BrowserTransferStateModule } from '@angular/platform-browser';
 import { REQUEST } from '@nguniversal/express-engine/tokens';
-import { TranslateBrowserModule } from './translate/translate-browser';
 import { AppComponent } from './app.component';
 import { AppModule } from './app.module';
 import { ServiceWorkerModule } from '@angular/service-worker';
 import { StateTransferInitializerModule } from '@nguniversal/common';
 import { environment } from 'environments/server/environment';
+import { BrowserFileModule } from './file-loader/browser/browser-file.module';
+import { TranslateService } from './translate';
 
 // the Request object only lives on the server
 export function getRequest(): any {
@@ -21,14 +22,19 @@ export function getRequest(): any {
         BrowserTransferStateModule,
         TranslateBrowserModule.forRoot(),
         ServiceWorkerModule.register('./ngsw-worker.js', { enabled: environment.production}),
+        BrowserFileModule.forRoot(),
     ],
     providers: [
+        TranslateService,
         {
             // The server provides these in main.server
             provide: REQUEST,
             useFactory: getRequest,
         },
-        { provide: 'ORIGIN_URL', useValue: location.origin },
+        {
+            provide: 'ORIGIN_URL',
+            useValue: location.origin,
+        },
     ],
 })
 export class AppBrowserModule {

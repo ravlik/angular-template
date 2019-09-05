@@ -11,6 +11,12 @@
             ],
             "meta": [
                 "app/meta/meta"
+            ],
+            "file-loader": [
+                "app/file-loader/file.loader"
+            ],
+            "config": [
+                "app/config/index"
             ]
         },
         "outDir": "./dist/out-tsc",

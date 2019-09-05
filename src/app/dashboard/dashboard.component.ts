@@ -1,7 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { Observable } from 'rxjs';
 import { ILang, TranslateService } from '../translate';
-import { UsersProvider, IUser } from 'communication';
+import { UsersProvider } from 'communication';
+import { AppConfig } from '../app.config';
 
 @Component({
     selector: 'app-home',
@@ -10,17 +11,18 @@ import { UsersProvider, IUser } from 'communication';
 export class DashboardComponent implements OnInit {
     public langList$: Observable<ILang[]>;
     public currentLang: string;
-    users: IUser[];
+    users: any;
 
     constructor(private _translateService: TranslateService,
-                private _usersProvider: UsersProvider) {
+                private _usersProvider: UsersProvider,
+                public config: AppConfig) {
     }
 
     ngOnInit(): void {
         this.langList$ = this._translateService.getLangList();
         this.currentLang = this._translateService.language;
 
-        this._usersProvider.getItems();
+        this.users = this._usersProvider.getItems();
     }
 
     public changeLang(code: string): void {

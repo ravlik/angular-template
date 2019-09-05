@@ -1,15 +1,20 @@
 import { Observable } from 'rxjs';
 import { HttpClient, HttpParams } from '@angular/common/http';
-import { Injectable } from '@angular/core';
+import { Inject, Injectable } from '@angular/core';
 import { ExcludeId, Provider } from '../common/provider';
-import { IIdObject } from 'communication';
+import { CommunicationConfig } from '../../communication.config';
+import { IIdObject } from '../../models/id.object';
 
 @Injectable()
 export abstract class HttpProvider<T extends IIdObject> implements Provider<T> {
-    protected abstract _baseUrl: string;
+    protected _baseUrl: string;
 
-    constructor(protected _http: HttpClient) {
+    constructor(@Inject(HttpClient) protected _http: HttpClient,
+                @Inject(CommunicationConfig) protected _communicationConfig: CommunicationConfig) {
+        this._baseUrl = this._getURL(_communicationConfig);
     }
+
+    protected abstract _getURL(config: CommunicationConfig): string;
 
     getItemById(id: number): Observable<T> {
         return this._http.get<T>(this._concatUrl(id));

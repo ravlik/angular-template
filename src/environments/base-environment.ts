@@ -1,8 +1,8 @@
 const BASE_ENVIRONMENT = {
     // for prerender
     host: 'http://localhost:4000',
-    assets: 'need override environment',
-    useMocks: true,
+    root: 'need override environment',
+    useMocks: false,
     credentials: {
         username: '',
         password: '',
@@ -24,11 +24,11 @@ export const BASE_PROD_ENVIRONMENT = {
 };
 
 export const SERVER_ENVIRONMENT = {
-    assets: './dist/assets/',
+    root: './dist/',
     isServer: true,
 };
 
 export const BROWSER_ENVIRONMENT = {
-    assets: './assets/',
+    root: './',
     isServer: false,
 };

@@ -3,8 +3,6 @@ import { delay } from 'rxjs/operators';
 import { IIdObject } from 'communication';
 import { ExcludeId, Provider } from '../common/provider';
 
-
-// @ts-ignore
 export abstract class FakeProvider<T extends IIdObject> implements Provider<T> {
     protected _delay: number;
 
