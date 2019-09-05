@@ -1,5 +1,9 @@
-import { inject, OnInit } from '@angular/core';
+import { Inject, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup } from '@angular/forms';
+import { NotifierService } from '../notifier/notifier.service';
+import { ActivatedRoute } from '@angular/router';
+import { Observable } from 'rxjs';
+import { AppConfig } from '../app.config';
 
 export interface IErrorMessage {
     [error: string]: string;
@@ -14,6 +18,14 @@ export abstract class FormComponent implements OnInit {
     errors: IErrorMessage = {};
 
     protected abstract errorsMessages: IErrorsMessages;
+
+    protected abstract submitRequest(): Observable<any>;
+
+    constructor(@Inject(FormBuilder) protected formBuilder: FormBuilder,
+                @Inject(NotifierService) protected notifier: NotifierService,
+                @Inject(AppConfig) private _communicationConfig: AppConfig,
+                @Inject(ActivatedRoute) private route: ActivatedRoute) {
+    }
 
     ngOnInit(): void {
         this.form = this.createForm();
@@ -42,5 +54,23 @@ export abstract class FormComponent implements OnInit {
             return this.errorsMessages[key][errorProp];
         }
         return 'This field does not meet the requirements';
+    }
+
+    submit() {
+        this._handleStatusChange(this.form);
+
+        if (this.form.valid) {
+            this.submitRequest().subscribe(() => this._queryRedirect(),
+                (e) => this.showErrorRequest(e));
+        }
+    }
+
+    private _queryRedirect() {
+        const redirect = this.route.snapshot.queryParamMap.get('redirect');
+        window.location.href = (redirect || this._communicationConfig.authentication.redirect);
+    }
+
+    private showErrorRequest(e: any) {
+        return this.notifier.showError(e);
     }
 }

@@ -1,6 +1,7 @@
 import { Component } from '@angular/core';
-import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
+import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { FormComponent } from '../form.component';
+import { Observable, of, throwError } from 'rxjs';
 
 @Component({
     selector: 'app-login',
@@ -8,37 +9,39 @@ import { FormComponent } from '../form.component';
     styleUrls: ['../auth.scss'],
 })
 export class LoginComponent extends FormComponent {
-    form: FormGroup;
 
     protected errorsMessages = {
         username: {
             required: 'Username is required',
+            minlength: 'Username must have minimum 3 symbols',
+            maxlength: 'Username must have maximum 50 symbols',
         },
         password: {
             required: 'Password is required',
-            minlength: 'Password must have minimum 8 symbols',
+            minlength: 'Password must have minimum 3 symbols',
+            maxlength: 'Password must have maximum 50 symbols',
         },
     };
 
-    constructor(private formBuilder: FormBuilder) {
-        super();
+    protected submitRequest(): Observable<any> {
+        if (this.form.value.username === '111' && this.form.value.password === '111') {
+            return of(this.form.value);
+        }
+        return throwError('Invalid user');
     }
 
     protected createForm(): FormGroup {
         return this.formBuilder.group({
-            username: new FormControl('', Validators.required),
+            username: new FormControl('', [
+                Validators.required,
+                Validators.minLength(3),
+                Validators.maxLength(50),
+            ]),
             password: new FormControl('', [
                 Validators.required,
-                Validators.minLength(8),
+                Validators.minLength(3),
+                Validators.maxLength(50),
             ]),
         });
     }
-
-    login() {
-        this._handleStatusChange(this.form);
-        if (this.form.valid) {
-            console.log('after submit', this.form.value);
-        }
-    }
-
 }
