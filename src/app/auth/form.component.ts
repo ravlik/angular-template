@@ -67,8 +67,15 @@ export abstract class FormComponent implements OnInit {
     }
 
     private _handleSuccessSubmit() {
-        const redirect = this.route.snapshot.queryParamMap.get('redirect');
-        window.location.href = (redirect || this._communicationConfig.authentication.redirect);
+        const redirect = this.route.snapshot.queryParamMap.get('redirect'),
+            config = this._communicationConfig,
+            authentication = config && config.authentication,
+            url = redirect || authentication && authentication.redirect;
+
+        if (url)
+            window.location.replace(url);
+        else
+            this.notifier.showError('Please provide valid redirect URL');
     }
 
     private _handleErrorSubmit(e: any) {
