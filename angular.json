@@ -11,11 +11,8 @@
                 "build": {
                     "builder": "@angular-devkit/build-angular:browser",
                     "options": {
-<<<<<<< HEAD
                         "serviceWorker": true,
                         "ngswConfigPath": "ngsw-config.json",
-=======
->>>>>>> a9b298e83e86f2bced1d0a313ea330bb7aafbf1e
                         "outputPath": "dist",
                         "index": "src/index.html",
                         "main": "src/main.browser.ts",
@@ -23,10 +20,7 @@
                         "polyfills": "src/polyfills.ts",
                         "assets": [
                             "src/assets",
-<<<<<<< HEAD
-=======
                             "src/config",
->>>>>>> a9b298e83e86f2bced1d0a313ea330bb7aafbf1e
                             "src/favicon.ico",
                             "src/robots.txt",
                             "src/manifest.json"
@@ -98,10 +92,7 @@
                         ],
                         "assets": [
                             "src/assets",
-<<<<<<< HEAD
-=======
                             "src/config",
->>>>>>> a9b298e83e86f2bced1d0a313ea330bb7aafbf1e
                             "src/favicon.ico",
                             "src/robots.txt",
                             "src/manifest.json"

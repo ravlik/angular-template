@@ -20,7 +20,6 @@ export function getRequest(): any {
         AppModule,
         StateTransferInitializerModule,
         BrowserTransferStateModule,
-        TranslateBrowserModule.forRoot(),
         ServiceWorkerModule.register('./ngsw-worker.js', { enabled: environment.production}),
         BrowserFileModule.forRoot(),
     ],
