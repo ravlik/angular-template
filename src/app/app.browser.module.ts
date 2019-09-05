@@ -6,6 +6,7 @@ import { AppComponent } from './app.component';
 import { AppModule } from './app.module';
 import { ServiceWorkerModule } from '@angular/service-worker';
 import { StateTransferInitializerModule } from '@nguniversal/common';
+import { environment } from 'environments/server/environment';
 
 // the Request object only lives on the server
 export function getRequest(): any {
@@ -19,7 +20,7 @@ export function getRequest(): any {
         StateTransferInitializerModule,
         BrowserTransferStateModule,
         TranslateBrowserModule.forRoot(),
-        ServiceWorkerModule.register('./ngsw-worker.js', { enabled: true }),
+        ServiceWorkerModule.register('./ngsw-worker.js', { enabled: environment.production}),
     ],
     providers: [
         {
