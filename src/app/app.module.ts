@@ -14,7 +14,7 @@ import { Translate } from './translate/translate';
 import { Meta } from 'meta';
 import { ConfigModule } from 'config';
 import { AppConfig } from './app.config';
-import { NotifierModule } from './notifier/notifier.module';
+import { NotifierModule } from 'notifier';
 
 export function initLanguage(translateService: TranslateService): Function {
     return (): Promise<any> => translateService.initLanguage();

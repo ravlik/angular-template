@@ -60,17 +60,18 @@ export abstract class FormComponent implements OnInit {
         this._handleStatusChange(this.form);
 
         if (this.form.valid) {
-            this.submitRequest().subscribe(() => this._queryRedirect(),
-                (e) => this.showErrorRequest(e));
+            this.submitRequest().subscribe(
+                () => this._handleSuccessSubmit(),
+                (e) => this._handleErrorSubmit(e));
         }
     }
 
-    private _queryRedirect() {
+    private _handleSuccessSubmit() {
         const redirect = this.route.snapshot.queryParamMap.get('redirect');
         window.location.href = (redirect || this._communicationConfig.authentication.redirect);
     }
 
-    private showErrorRequest(e: any) {
+    private _handleErrorSubmit(e: any) {
         return this.notifier.showError(e);
     }
 }
