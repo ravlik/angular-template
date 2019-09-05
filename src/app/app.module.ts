@@ -14,7 +14,7 @@ import { Translate } from './translate/translate';
 import { Meta } from 'meta';
 import { ConfigModule } from 'config';
 import { AppConfig } from './app.config';
-import { SentryErrorHandler } from './sentry';
+import { SentryModule } from 'sentry';
 
 export function initLanguage(translateService: TranslateService): Function {
     return (): Promise<any> => translateService.initLanguage();
@@ -37,6 +37,7 @@ export function initLanguage(translateService: TranslateService): Function {
             path: 'config/config.json',
             configProvider: AppConfig,
         }),
+        SentryModule.forRoot(),
     ],
     declarations: [AppComponent],
     providers: [
@@ -48,10 +49,6 @@ export function initLanguage(translateService: TranslateService): Function {
             useFactory: initLanguage,
             multi: true,
             deps: [TranslateService],
-        },
-        { 
-            provide: ErrorHandler,
-            useClass: SentryErrorHandler
         },
     ],
 })

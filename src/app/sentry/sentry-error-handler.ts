@@ -1,6 +1,5 @@
 import { Injectable, ErrorHandler, Inject } from '@angular/core';
 import * as Sentry from '@sentry/browser';
-import { CommunicationConfig } from 'communication';
 import { AppConfig } from '../app.config';
 
 @Injectable({
@@ -8,28 +7,28 @@ import { AppConfig } from '../app.config';
 })
 export class SentryErrorHandler implements ErrorHandler {
     isInitDone: boolean;
-    constructor(@Inject(AppConfig) protected _communicationConfig: AppConfig) { }
+    constructor(protected _communicationConfig: AppConfig) { }
 
     handleError(error) {
-        if (!this.isInitDone) {
-            this._isInitialized();
-            this.handleError(error);
+        if (!this.initIfNeed()) {
+            return;
         } else {
             const eventId = Sentry.captureException(error.originalError || error);
             Sentry.showReportDialog({ eventId });
         }
     }
 
-    private _isInitialized(): boolean {
-        if (!this._communicationConfig.sentry.enable ||
-            !this._communicationConfig.sentry.dsn ||
-            this._communicationConfig === null ||
-            typeof this._communicationConfig.sentry.dsn !== 'string') {
-            console.log('is Sentry init  ', false);
-            return this.isInitDone = false;
+    private initIfNeed(): boolean {
+        const sentryConfig = this._communicationConfig;
+
+        if (sentryConfig === null ||
+            !sentryConfig.sentry.dsn ||
+            !sentryConfig.sentry.enable ||
+            typeof sentryConfig.sentry.dsn !== 'string') {
+            return false;
         } else {
             Sentry.init({ dsn: this._communicationConfig.sentry.dsn });
-            return this.isInitDone = true;
+            return true;
         }
     }
 }

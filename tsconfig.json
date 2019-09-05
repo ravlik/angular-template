@@ -17,6 +17,9 @@
             ],
             "config": [
                 "app/config/index"
+            ],
+            "sentry": [
+                "app/sentry/index"
             ]
         },
         "outDir": "./dist/out-tsc",
