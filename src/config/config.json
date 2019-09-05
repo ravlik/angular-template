@@ -2,5 +2,8 @@
     "version": 0,
     "http": {
         "users": "http://fakerestapi.azurewebsites.net/api/Users"
+    },
+    "authentication": {
+        "redirect": "http://localhost:4000/dashboard"
     }
 }
