@@ -1,0 +1,25 @@
+@import '@angular/material/prebuilt-themes/deeppurple-amber.css';
+
+.wrapper {
+    width: 70%;
+    padding-top: 30px;
+    margin: 0 auto;
+}
+
+.user-edit-form {
+    display: flex;
+    flex-flow: column;
+}
+
+.mat-card-actions {
+    display: flex;
+    flex-flow: row wrap;
+    justify-content: space-between;
+
+    button {
+        width: 40%;
+    }
+    .btn-cancel {
+        background-color: red;
+    }
+}

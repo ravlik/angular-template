@@ -63,7 +63,10 @@ export abstract class HttpProvider<T extends IIdObject> implements Provider<T> {
     // }
 
     private _concatUrl(...params: (string | number)[]): string {
-        return `${this._baseUrl}`.concat(...params.map(toString));
+        console.log(`${this._baseUrl}`);
+        console.log(...params);
+
+        return `${this._baseUrl}`.concat('/', ...params.map(toString));
     }
 }
 
