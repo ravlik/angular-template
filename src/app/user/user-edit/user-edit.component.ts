@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { Router, ActivatedRoute } from '@angular/router';
 import { UsersProvider } from 'communication';
-import { FormBuilder, FormGroup, FormControl, Validators } from '@angular/forms';
+import { FormGroup, FormControl, Validators } from '@angular/forms';
 
 @Component({
     selector: 'app-user-edit',
@@ -12,10 +12,12 @@ export class UserEditComponent implements OnInit {
 
     constructor(private _router: Router,
         private _route: ActivatedRoute,
-        private _userProvider: UsersProvider,
-        private _fb: FormBuilder) { }
+        private _userProvider: UsersProvider) { }
     user;
     userEditForm: FormGroup;
+    newUserName: string;
+    newUserPassword: string;
+    newUserAge: number;
 
 
     ngOnInit() {
@@ -39,52 +41,27 @@ export class UserEditComponent implements OnInit {
             userName: new FormControl(this.user.userName, Validators.required),
             userPassword: new FormControl(this.user.Password,
                         Validators.compose([Validators.required, Validators.minLength(3), Validators.maxLength(10)])),
-            userAge: new FormControl(null, Validators.required)
+         //  userAge: new FormControl(null)
         });
 
     }
 
-    submitChanges() {
-        console.log('submit');
+    submitChanges(postData) {
         console.log('this.userEditForm.value;', this.userEditForm.value);
-        return this.userEditForm.value;
+        
+        console.log('updated user ---', this.user);
+        this._userProvider.updateItem(this.user).subscribe(
+            res => {
+                console.log(res);
+                this._router.navigate(['./', {relativeTo: this._route}]);
+            },
+            err => console.error(err)
+        );  
+        
     }
 
-    // protected createNewForm(): FormGroup {
-    //     console.log(new FormGroup({
-    //         userName: new FormControl(null, [Validators.required]),
-    //         userPassword: new FormControl(null, [Validators.required]),
-    //         userAge: new FormControl(null, [Validators.required])
-    //     }));
-    //     return new FormGroup({
-    //         userName: new FormControl(null, [Validators.required]),
-    //         userPassword: new FormControl(null, [Validators.required]),
-    //         userAge: new FormControl(null, [Validators.required])
-    //     });
-    // }
-
     cancelChange() {
-        this._router.navigate(['../'], { relativeTo: this._route });
+        this._router.navigate(['./']);
     }
 
 }
-
-
-// protected createForm(): FormGroup {
-//     return new FormGroup({
-//         firstName: new FormControl(null, [
-//             Validators.required,
-//         ]),
-//         lastName: new FormControl(null, [
-//             Validators.required,
-//         ]),
-
-//     });
-// }
-
-// changeFullName() {
-//     this._handleStatusChange(this.form, true);
-//     if (this.form.valid) {
-//         this.dialogRef.close(this.form.value);
-//     }
-// }

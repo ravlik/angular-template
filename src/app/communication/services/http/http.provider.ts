@@ -34,7 +34,7 @@ export abstract class HttpProvider<T extends IIdObject> implements Provider<T> {
     }
 
     updateItem(item: T): Observable<any> {
-        return this._http.put<any>(this._concatUrl(item.id), item);
+        return this._http.put<any>(this._concatUrl(item.id || item.ID), item);
     }
 
     deleteItem(id: number): Observable<any> {
