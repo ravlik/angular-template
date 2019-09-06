@@ -38,7 +38,7 @@ export class UserEditComponent implements OnInit {
         this.userEditForm = new FormGroup({
             userName: new FormControl(this.user.userName, Validators.required),
             userPassword: new FormControl(this.user.Password,
-                        Validators.compose([Validators.required, Validators.maxLength(3), Validators.maxLength(10)])),
+                        Validators.compose([Validators.required, Validators.minLength(3), Validators.maxLength(10)])),
             userAge: new FormControl(null, Validators.required)
         });
 
@@ -46,21 +46,22 @@ export class UserEditComponent implements OnInit {
 
     submitChanges() {
         console.log('submit');
-        this.createNewForm();
+        console.log('this.userEditForm.value;', this.userEditForm.value);
+        return this.userEditForm.value;
     }
 
-    protected createNewForm(): FormGroup {
-        console.log(new FormGroup({
-            userName: new FormControl(null, [Validators.required]),
-            userPassword: new FormControl(null, [Validators.required]),
-            userAge: new FormControl(null, [Validators.required])
-        }));
-        return new FormGroup({
-            userName: new FormControl(null, [Validators.required]),
-            userPassword: new FormControl(null, [Validators.required]),
-            userAge: new FormControl(null, [Validators.required])
-        });
-    }
+    // protected createNewForm(): FormGroup {
+    //     console.log(new FormGroup({
+    //         userName: new FormControl(null, [Validators.required]),
+    //         userPassword: new FormControl(null, [Validators.required]),
+    //         userAge: new FormControl(null, [Validators.required])
+    //     }));
+    //     return new FormGroup({
+    //         userName: new FormControl(null, [Validators.required]),
+    //         userPassword: new FormControl(null, [Validators.required]),
+    //         userAge: new FormControl(null, [Validators.required])
+    //     });
+    // }
 
     cancelChange() {
         this._router.navigate(['../'], { relativeTo: this._route });
