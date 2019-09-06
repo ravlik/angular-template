@@ -80,7 +80,7 @@ export class TranslateService {
         }
 
         this._meta.setTag('og:locale', culture);
-        this._document.documentElement.lang = code;
+        this._document.documentElement.lang = culture;
         this.language = code;
     }
 

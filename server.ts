@@ -1,140 +1,88 @@
 import 'zone.js/dist/zone-node';
 import 'reflect-metadata';
-
-// for debug
-require('source-map-support').install();
-
-// for tests
-const test = process.env['TEST'] === 'true';
-
-// ssr DOM
-const domino = require('domino');
-const fs = require('fs');
-const path = require('path');
-// index from browser build!
-const template = fs.readFileSync(path.join(__dirname, '.', 'dist', 'index.html')).toString();
-// for mock global window by domino
-const win = domino.createWindow(template);
-// from server build
-const files = fs.readdirSync(`${process.cwd()}/dist-server`);
-// mock
-global['window'] = win;
-// not implemented property and functions
-Object.defineProperty(win.document.body.style, 'transform', {
-    value: () => {
-        return {
-            enumerable: true,
-            configurable: true,
-        };
-    },
-});
-// mock documnet
-global['document'] = win.document;
-// othres mock
-global['CSS'] = null;
-// global['XMLHttpRequest'] = require('xmlhttprequest').XMLHttpRequest;
-global['Prism'] = null;
-
 import { enableProdMode } from '@angular/core';
 import * as express from 'express';
 import * as compression from 'compression';
 import * as cookieparser from 'cookie-parser';
-// lazy loader
-const { provideModuleMap } = require('@nguniversal/module-map-ngfactory-loader');
-// get server main
-const mainFiles = files.filter((file) => file.startsWith('main'));
-// with hash
-const hash = mainFiles[0].split('.')[1];
-// main from server impl.
-const { AppServerModuleNgFactory, LAZY_MODULE_MAP } = require(`./dist-server/main.${hash}`);
 import { ngExpressEngine } from '@nguniversal/express-engine';
 import { REQUEST, RESPONSE } from '@nguniversal/express-engine/tokens';
-// port
-const PORT = process.env.PORT || 4000;
-// static path from prerenders
-import { ROUTES } from './static.paths';
-// for test
-import { exit } from 'process';
+import { provideModuleMap } from '@nguniversal/module-map-ngfactory-loader'; // lazy loader
+import * as domino from 'domino'; // ssr DOM
+import * as fs from 'fs';
+import * as path from 'path';
+import * as bodyParser from 'body-parser';
+import * as sourceMap from 'source-map-support'; // for debug
+// import * as request from 'request';
+import { ROUTES } from './static.paths'; // static path from prerenders
 
+sourceMap.install(); // for test
 enableProdMode();
 
-const app = express();
-// gzip
-app.use(compression());
-// cokies
-app.use(cookieparser());
+const template = fs.readFileSync(path.join(__dirname, '.', 'dist', 'index.html')).toString(), // index from browser build!
+    win = domino.createWindow(template), // for mock global window by domino
+    files = fs.readdirSync(`${process.cwd()}/dist-server`), // from server build
+    mainFiles = files.filter((file) => file.startsWith('main')), // get server main
+    hash = mainFiles[0].split('.')[1], // with hash
+    { AppServerModuleNgFactory, LAZY_MODULE_MAP } = require(`./dist-server/main.${hash}`), // main from server impl.
+    PORT = process.env.PORT || 4000; // port
 
-// redirects!
-const redirectowww = false;
-const redirectohttps = false;
-const wwwredirecto = true;
-app.use((req, res, next) => {
-// for domain/index.html
+// not implemented property and functions
+Object.defineProperty(win.document.body.style, 'transform', {
+    value: () => ({
+        enumerable: true,
+        configurable: true,
+    }),
+});
+global['window'] = win; // mock
+global['document'] = win.document; // mock documnet
+global['CSS'] = null; // othres mock
+global['Prism'] = null; // global['XMLHttpRequest'] = require('xmlhttprequest').XMLHttpRequest;
+
+export function redirect(req, res, next) {
     if (req.url === '/index.html') {
-        res.redirect(301, 'https://' + req.hostname);
+        // for domain/index.html
+        return res.redirect(301, 'https://' + req.hostname);
     }
 
-// check if it is a secure (https) request
-// if not redirect to the equivalent https url
-    if (
-        redirectohttps &&
-        req.headers['x-forwarded-proto'] !== 'https' &&
-        req.hostname !== 'localhost'
-    ) {
-        // special for robots.txt
+    if (req.headers['x-forwarded-proto'] !== 'https' &&
+        req.hostname !== 'localhost') {
+        // check if it is a secure (https) request
+        // if not redirect to the equivalent https url
+
         if (req.url === '/robots.txt') {
+            // special for robots.txt
             next();
             return;
         }
-        res.redirect(301, 'https://' + req.hostname + req.url);
+        return res.redirect('https://' + req.hostname + req.url);
     }
 
-// www or not
-    if (redirectowww && !req.hostname.startsWith('www.')) {
-        res.redirect(301, 'https://www.' + req.hostname + req.url);
-    }
+    // if (redirectowww && !req.hostname.startsWith('www.')) {
+    //     res.redirect('https://www.' + req.hostname + req.url);
+    // }
+    //
+    // if (wwwredirecto && req.hostname.startsWith('www.')) {
+    //     const host = req.hostname.slice(4, req.hostname.length);
+    //     res.redirect('https://' + host + req.url);
+    // }
 
-// www or not
-    if (wwwredirecto && req.hostname.startsWith('www.')) {
-        const host = req.hostname.slice(4, req.hostname.length);
-        res.redirect(301, 'https://' + host + req.url);
-    }
-
-// for test
-    if (test && req.url === '/test/exit') {
-        res.send('exit');
-        exit(0);
-        return;
-    }
+    // // for test
+    // if (test && req.url === '/test/exit') {
+    //     res.send('exit');
+    //     exit(0);
+    //     return;
+    // }
 
     next();
-});
+}
 
-// engine
-app.engine(
-    'html',
-    ngExpressEngine({
-        bootstrap: AppServerModuleNgFactory,
-        providers: [provideModuleMap(LAZY_MODULE_MAP)],
-    }),
-);
-// must
-app.set('view engine', 'html');
-app.set('views', 'src');
-// all search
-app.get('*.*', express.static(path.join(__dirname, '.', 'dist')));
-// static
-app.get(ROUTES, express.static(path.join(__dirname, '.', 'static')));
 // dynamic render
-app.get('*', (req, res) => {
-// mock navigator from req.
-    global['navigator'] = req['headers']['user-agent'];
-    const http =
-        req.headers['x-forwarded-proto'] === undefined ? 'http' : req.headers['x-forwarded-proto'];
+export function render(req, res) {
+    global['navigator'] = req['headers']['user-agent'];     // mock navigator from req.
+    const http = req.headers['x-forwarded-proto'] === undefined ? 'http' : req.headers['x-forwarded-proto'],
+        url = req.originalUrl;
 
-    const url = req.originalUrl;
-// tslint:disable-next-line:no-console
-    console.time(`GET: ${url}`);
+    console.time(`GET: ${url}`); // tslint:disable-line
     res.render(
         '../dist/index',
         {
@@ -159,17 +107,35 @@ app.get('*', (req, res) => {
             ],
         },
         (err, html) => {
-            if (!!err) {
+            if (err)
                 throw err;
-            }
 
-            // tslint:disable-next-line:no-console
-            console.timeEnd(`GET: ${url}`);
+            console.timeEnd(`GET: ${url}`); // tslint:disable-line
             res.send(html);
         },
     );
-});
+}
 
-app.listen(PORT, () => {
-    console.log(`listening on http://localhost:${PORT}!`);
-});
+const app = express();
+
+app.engine(
+    'html',
+    ngExpressEngine({
+        bootstrap: AppServerModuleNgFactory,
+        providers: [provideModuleMap(LAZY_MODULE_MAP)],
+    }),
+);
+
+app.use(compression()); // gzip
+app.use(cookieparser()); // cokies
+app.use(bodyParser.json()); // create application/json parser
+app.use(redirect);
+
+app.set('view engine', 'html'); // must
+app.set('views', 'src');
+
+app.get('*.*', express.static(path.join(__dirname, '.', 'dist'))); // all search
+app.get(ROUTES, express.static(path.join(__dirname, '.', 'static'))); // static
+app.get('*', render);
+
+app.listen(PORT, () => console.log(`listening on http://localhost:${PORT}!`));
