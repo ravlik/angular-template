@@ -1,7 +1,7 @@
 import { Inject, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup } from '@angular/forms';
 import { NotifierService } from '../notifier/notifier.service';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { Observable } from 'rxjs';
 import { AppConfig } from '../app.config';
 
@@ -24,22 +24,22 @@ export abstract class FormComponent implements OnInit {
     constructor(@Inject(FormBuilder) protected formBuilder: FormBuilder,
                 @Inject(NotifierService) protected notifier: NotifierService,
                 @Inject(AppConfig) private _communicationConfig: AppConfig,
-                @Inject(ActivatedRoute) private route: ActivatedRoute) {
+                @Inject(ActivatedRoute) private route: ActivatedRoute,
+                @Inject(Router) protected router: Router) {
     }
 
     ngOnInit(): void {
         this.form = this.createForm();
-        this.form.statusChanges.subscribe(() => this._handleStatusChange(this.form));
         this._handleStatusChange(this.form);
     }
 
     protected abstract createForm(): FormGroup;
 
-    protected _handleStatusChange(form: FormGroup) {
+    private _handleStatusChange(form: FormGroup, isSubmitted = false) {
         const controls = form.controls;
         for (const key of Object.keys(controls)) {
             const control = controls[key];
-            if (control.errors && (form.touched || form.dirty) && control.touched) {
+            if (control.errors && (form.touched || form.dirty || isSubmitted) && (control.touched || isSubmitted)) {
                 this.errors[key] = this._getError(key, control.errors);
             } else {
                 this.errors[key] = '';
@@ -57,7 +57,7 @@ export abstract class FormComponent implements OnInit {
     }
 
     submit() {
-        this._handleStatusChange(this.form);
+        this._handleStatusChange(this.form, true);
 
         if (this.form.valid) {
             this.submitRequest().subscribe(
@@ -66,7 +66,7 @@ export abstract class FormComponent implements OnInit {
         }
     }
 
-    private _handleSuccessSubmit() {
+    protected _handleSuccessSubmit() {
         const redirect = this.route.snapshot.queryParamMap.get('redirect'),
             config = this._communicationConfig,
             authentication = config && config.authentication,

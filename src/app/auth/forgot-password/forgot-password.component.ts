@@ -1,37 +1,39 @@
-import { Component, OnInit } from '@angular/core';
-import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
-import { Router } from '@angular/router';
+import { Component } from '@angular/core';
+import { FormControl, FormGroup, Validators } from '@angular/forms';
+import { FormComponent } from '../form.component';
+import { Observable, of } from 'rxjs';
 
 @Component({
     selector: 'app-forgot-password',
     templateUrl: './forgot-password.component.html',
     styleUrls: ['../auth.scss'],
 })
-export class ForgotPasswordComponent implements OnInit {
-    form: FormGroup;
+export class ForgotPasswordComponent extends FormComponent {
 
-    constructor(private formBuilder: FormBuilder,
-                private router: Router) {
-    }
+    protected errorsMessages = {
+        email: {
+            required: 'Email is required',
+            email: 'Email is not valid',
+        },
+    };
 
-    ngOnInit() {
-        this.form = this.createForm();
-    }
-
-    private createForm(): FormGroup {
+    protected createForm(): FormGroup {
         return this.formBuilder.group({
-            email: new FormControl('', [
+            email: new FormControl(null, [
                 Validators.required,
                 Validators.email,
             ]),
         });
     }
 
-    forgotPassword() {
+    protected submitRequest(): Observable<any> {
+        return of(this.form.value);
+    }
+
+    protected _handleSuccessSubmit() {
         if (this.form.valid) {
             console.log('send email to this address ->', this.form.value.email);
             this.router.navigate(['/newPassword']);
         }
     }
-
 }

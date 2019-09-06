@@ -32,12 +32,12 @@ export class LoginComponent extends FormComponent {
 
     protected createForm(): FormGroup {
         return this.formBuilder.group({
-            username: new FormControl('', [
+            username: new FormControl(null, [
                 Validators.required,
                 Validators.minLength(3),
                 Validators.maxLength(50),
             ]),
-            password: new FormControl('', [
+            password: new FormControl(null, [
                 Validators.required,
                 Validators.minLength(3),
                 Validators.maxLength(50),
