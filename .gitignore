@@ -45,3 +45,8 @@ testem.log
 Thumbs.db
 prerender.js.map
 server.js.map
+
+app/dist
+app/dist-server
+app/static
+app/server.js
