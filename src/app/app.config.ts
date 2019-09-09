@@ -2,7 +2,9 @@ import { CommunicationConfig, HttpConfig } from 'communication';
 import { Config } from 'config';
 import { SentryConfig } from 'sentry';
 
-import { AuthenticationConfig } from './communication/models/authenticationConfig';
+export interface AuthenticationConfig {
+    redirect: string;
+}
 
 export class AppConfig extends Config implements CommunicationConfig {
     version: number;
