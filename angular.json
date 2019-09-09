@@ -11,6 +11,9 @@
                 "build": {
                     "builder": "@angular-devkit/build-angular:browser",
                     "options": {
+                        "baseHref": "/account/",
+                        "serviceWorker": true,
+                        "ngswConfigPath": "ngsw-config.json",
                         "outputPath": "dist",
                         "index": "src/index.html",
                         "main": "src/main.browser.ts",
@@ -25,7 +28,8 @@
                         ],
                         "styles": [
                             "src/styles/index.scss",
-                            "node_modules/@angular/material/prebuilt-themes/deeppurple-amber.css"
+                            "node_modules/@angular/material/prebuilt-themes/deeppurple-amber.css",
+                            "node_modules/ngx-toastr/toastr.css"
                         ],
                         "scripts": []
                     },

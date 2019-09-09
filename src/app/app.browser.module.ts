@@ -5,6 +5,7 @@ import { AppComponent } from './app.component';
 import { AppModule } from './app.module';
 import { ServiceWorkerModule } from '@angular/service-worker';
 import { StateTransferInitializerModule } from '@nguniversal/common';
+import { environment } from 'environments/server/environment';
 import { BrowserFileModule } from './file-loader/browser/browser-file.module';
 import { TranslateService } from './translate';
 
@@ -19,8 +20,8 @@ export function getRequest(): any {
         AppModule,
         StateTransferInitializerModule,
         BrowserTransferStateModule,
+        ServiceWorkerModule.register('./ngsw-worker.js', { enabled: environment.production}),
         BrowserFileModule.forRoot(),
-        ServiceWorkerModule.register('/ngsw-worker.js', { enabled: false }),
     ],
     providers: [
         TranslateService,

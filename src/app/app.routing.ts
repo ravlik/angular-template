@@ -3,8 +3,7 @@ import { RouterModule, Routes } from '@angular/router';
 const routes: Routes = [
     {
         path: '',
-        redirectTo: 'dashboard',
-        pathMatch: 'full',
+        loadChildren: './auth/auth.module#AuthModule',
     },
     {
         path: 'dashboard',
@@ -13,6 +12,10 @@ const routes: Routes = [
     {
         path: 'users',
         loadChildren: './user/user.module#UserModule',
+    },
+    {
+        path: 'error',
+        loadChildren: './error/error.module#ErrorModule',
     },
     {
         path: '**',
