@@ -15,11 +15,11 @@ const routes: Routes = [
         component: RegisterComponent,
     },
     {
-        path: 'forgotPassword',
+        path: 'forgot-password',
         component: ForgotPasswordComponent
     },
     {
-        path: 'newPassword',
+        path: 'new-password',
         component: NewPasswordComponent
     },
     {

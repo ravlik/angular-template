@@ -33,7 +33,7 @@ export class ForgotPasswordComponent extends FormComponent {
     protected _handleSuccessSubmit() {
         if (this.form.valid) {
             console.log('send email to this address ->', this.form.value.email);
-            this.router.navigate(['/newPassword']);
+            this.router.navigate(['/new-password']);
         }
     }
 }
