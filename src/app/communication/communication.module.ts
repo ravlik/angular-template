@@ -15,7 +15,11 @@ export class CommunicationModule {
                     provide: CommunicationConfig,
                     useExisting: communicationConfigToken,
                 },
-                registerService(UsersProvider, FakeUsersProvider, HttpUsersProvider),
+                registerService(UsersProvider, FakeUsersProvider, HttpUsersProvider)
+                // {
+                //     provide: UsersProvider,
+                //     useClass: FakeUsersProvider,
+                // }
             ],
         };
     }

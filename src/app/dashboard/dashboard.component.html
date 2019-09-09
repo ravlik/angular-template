@@ -1,17 +1,19 @@
-<select class="toolbar__lang" (change)="changeLang($event.target.value)">
-    <option *ngFor="let lang of langList$ | async"
-            [value]="lang.code"
-            [selected]="lang.code === currentLang">
-        {{ lang.name }}
-    </option>
-</select>
+<div>
+    <select class="toolbar__lang" (change)="changeLang($event.target.value)">
+        <option *ngFor="let lang of langList$ | async" [value]="lang.code" [selected]="lang.code === currentLang">
+            {{ lang.name }}
+        </option>
+    </select>
 
-<i class="material-icons">home</i>
-<h1>{{ "home.title" | translate }}</h1>
-<p>{{ "home.text" | translate }}</p>
-<a routerLink="/not-found">{{ "home.not-found" | translate }}</a>
+    <i class="material-icons">home</i>
+    <h1>{{ "home.title" | translate }}</h1>
+    <p>{{ "home.text" | translate }}</p>
+    <a routerLink="/not-found">{{ "home.not-found" | translate }}</a>
+    <button routerLink="/users">Open Users Page</button>
 
-<div>Config</div>
-<pre>{{config | json}}</pre>
+    <div>Config</div>
+    <pre>{{config | json}}</pre>
 
-<pre>{{users | async | json}}</pre>
+    <pre>{{users | async | json}}</pre>
+
+</div>

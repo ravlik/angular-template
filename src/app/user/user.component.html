@@ -1,0 +1,12 @@
+<div class="container">
+    <div class="container-top">
+        <h1>
+            Users List
+        </h1>
+        <button mat-stroked-button color="primary" routerLink="./create-user/edit">Add User</button>
+    </div>
+
+    <ul *ngFor="let user of users; let i = index;">
+        <li><a routerLink="./{{user.id}}">{{user.name}}</a></li>
+    </ul>
+</div>

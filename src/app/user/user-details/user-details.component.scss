@@ -1,0 +1,32 @@
+.wrapper {
+    width: 70%;
+    padding-top: 30px;
+    margin: 0 auto;
+
+    button {
+        width: 20%;
+        min-width: 40px;
+    }
+}
+
+.card-top,
+.user-edit-form {
+    display: flex;
+    flex-flow: row;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.user-edit-form {
+    flex-flow: column;
+}
+.mat-form-field,
+.mat-form-actions {
+    width: 85%;
+}
+.btn-delete {
+    background-color: red;
+}
+.btn-edit {
+    background-color: green;
+}

@@ -1,0 +1,16 @@
+<div class="wrapper">
+    <mat-card class="form-container">
+        <div class="card-top">
+            <button routerLink="../" class="btn-cancel" mat-stroked-button color="primary">Cancel</button>
+            <h1>User Details</h1>
+
+            <button routerLink="./edit" mat-stroked-button color="green" class="btn-edit">Edit User</button>
+            <button (click)="deleteUser(user.id)" class="btn-delete" mat-stroked-button color="warn">Delete User</button>
+
+        </div>
+        <h3>User ID: {{ user.id }}</h3>
+        <h3>User Name: {{ user.name }}</h3>
+        <h3>User Password: {{ user.password }}</h3>
+        <h3>User Date of Birth: {{ user.age | date }}</h3>
+    </mat-card>
+</div>
