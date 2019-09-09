@@ -11,7 +11,7 @@
                 "build": {
                     "builder": "@angular-devkit/build-angular:browser",
                     "options": {
-                        "baseHref": "/account/",
+                        "baseHref": "/",
                         "serviceWorker": true,
                         "ngswConfigPath": "ngsw-config.json",
                         "outputPath": "dist",

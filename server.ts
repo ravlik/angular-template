@@ -135,22 +135,22 @@ function login(req, res) {
 }
 
 function auth(req, res, next) {
-    console.log('req.body', req.headers);
-
-    req.pipe(request({
-        method: 'POST',
-        uri: 'http://localhost:3003/introspect',
-        headers: {
-            'Content-Type': 'application/json',
-        },
-    }).on('response', function(response) {
-        // unmodified http.IncomingMessage object
-        if (response.statusCode === 200)
-            next();
-        else
-            res.redirect(`/account/error/${response.statusCode}`);
-    }));
-    // .pipe(res);
+    return next();
+    // console.log('req.body', req.headers);
+    //
+    // req.pipe(request({
+    //     method: 'POST',
+    //     uri: 'http://localhost:3003/introspect',
+    //     headers: {
+    //         'Content-Type': 'application/json',
+    //     },
+    // }).on('response', function(response) {
+    //     // unmodified http.IncomingMessage object
+    //     if (response.statusCode === 200)
+    //         next();
+    //     else
+    //         res.redirect(`/account/error/${response.statusCode}`);
+    // }));
 }
 
 const app = express();

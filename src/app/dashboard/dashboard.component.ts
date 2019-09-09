@@ -22,6 +22,7 @@ export class DashboardComponent implements OnInit {
         this.langList$ = this._translateService.getLangList();
         this.currentLang = this._translateService.language;
 
+        console.log(this._usersProvider)
         this.users = this._usersProvider.getItems();
     }
 

@@ -5,6 +5,7 @@ import { FakeUsersProvider } from './services/fake/fake-users.provider';
 import { HttpUsersProvider } from './services/http/http-users.provider';
 import { CommunicationConfig } from './communication.config';
 
+
 @NgModule({})
 export class CommunicationModule {
     static forRoot(communicationConfigToken: Provider): ModuleWithProviders {
@@ -15,7 +16,7 @@ export class CommunicationModule {
                     provide: CommunicationConfig,
                     useExisting: communicationConfigToken,
                 },
-                registerService(UsersProvider, FakeUsersProvider, HttpUsersProvider)
+                registerService(UsersProvider, FakeUsersProvider, FakeUsersProvider)
                 // {
                 //     provide: UsersProvider,
                 //     useClass: FakeUsersProvider,
