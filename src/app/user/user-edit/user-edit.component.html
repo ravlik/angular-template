@@ -2,15 +2,15 @@
     <mat-card class="form-container">
         <form class="user-edit-form" [formGroup]="userEditForm" (ngSubmit)="submitChanges(userEditForm.value)">
             <mat-form-field class="example-full-width">
-                <input matInput placeholder="User Name" [(ngModel)]="user.UserName" formControlName="userName">
+                <input matInput placeholder="User Name" [(ngModel)]="user.name" formControlName="userName">
             </mat-form-field>
 
             <mat-form-field class="example-full-width">
-                <input matInput placeholder="Password" type="password"  [(ngModel)]="user.Password" formControlName="userPassword">
+                <input matInput placeholder="Password" type="password"  [(ngModel)]="user.password" formControlName="userPassword">
             </mat-form-field>
-            <!-- <mat-form-field class="example-full-width">
-                <input matInput placeholder="Age" type="number" formControlName="userAge">
-            </mat-form-field> -->
+            <mat-form-field class="example-full-width">
+                <input matInput placeholder="Age" type="number" [(ngModel)]="user.age"  formControlName="userAge">
+            </mat-form-field>
             <mat-card-actions>
                 <button mat-button type="submit" cdkFocusInitial>Save</button>
                 <button mat-button class="btn-cancel" (click)="cancelChange()">Cancel</button>

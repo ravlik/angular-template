@@ -57,7 +57,7 @@ export abstract class FakeProvider<T extends IIdObject> implements Provider<T> {
         }
 
         delete this._store[id];
-
+        
         return this._wrapDataInObservable(true);
     }
 

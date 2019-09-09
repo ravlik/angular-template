@@ -40,24 +40,24 @@ export class UserEditComponent implements OnInit {
         this.userEditForm = new FormGroup({
             userName: new FormControl(this.user.userName, Validators.required),
             userPassword: new FormControl(this.user.Password,
-                        Validators.compose([Validators.required, Validators.minLength(3), Validators.maxLength(10)])),
-         //  userAge: new FormControl(null)
+                Validators.compose([Validators.required, Validators.minLength(3), Validators.maxLength(10)])),
+            userAge: new FormControl(null)
         });
 
     }
 
     submitChanges(postData) {
         console.log('this.userEditForm.value;', this.userEditForm.value);
-        
+
         console.log('updated user ---', this.user);
         this._userProvider.updateItem(this.user).subscribe(
             res => {
                 console.log(res);
-                this._router.navigate(['./', {relativeTo: this._route}]);
+                this._router.navigate(['./', { relativeTo: this._route }]);
             },
             err => console.error(err)
-        );  
-        
+        );
+
     }
 
     cancelChange() {

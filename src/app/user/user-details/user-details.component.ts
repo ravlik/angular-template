@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
-import { UsersProvider } from 'communication';
+import { UsersProvider, IUser } from 'communication';
 import { relative } from 'path';
 
 @Component({
@@ -9,7 +9,7 @@ import { relative } from 'path';
     styleUrls: ['./user-details.component.scss']
 })
 export class UserDetailsComponent implements OnInit {
-    user;
+    user: IUser;
     id: number;
     constructor(private _route: ActivatedRoute,
                 private _userProvider: UsersProvider,
@@ -19,8 +19,8 @@ export class UserDetailsComponent implements OnInit {
         this._route.params.subscribe(
             params => {
                 this.id = +params.id;
-                this.user = this._userProvider.getItemById(this.id).subscribe(
-                    res => {
+                this._userProvider.getItemById(this.id).subscribe(
+                    (res: IUser) => {
                         this.user = res;
                         console.log(this.user);
                     },
@@ -35,6 +35,7 @@ export class UserDetailsComponent implements OnInit {
         this._userProvider.deleteItem(id).subscribe(
             res => {
                 console.log(res);
+                
                 this._router.navigate(['../'], {relativeTo: this._route});
             }
         );

@@ -1,18 +1,18 @@
 import { Component, OnInit } from '@angular/core';
-import { UsersProvider } from 'communication';
+import { UsersProvider, IUser } from 'communication';
 
 @Component({
     selector: 'app-user',
     templateUrl: './user.component.html',
 })
 export class UserComponent implements OnInit {
-    users: any;
+    users: IUser[];
 
     constructor(private _usersProvider: UsersProvider) { }
 
     ngOnInit() {
         this._usersProvider.getItems().subscribe(
-            res => this.users = res,
+           (res: IUser[]) => this.users = res,
             error => console.error(error)
         );
     }
