@@ -17,7 +17,7 @@ export class TokenInterceptor implements HttpInterceptor {
 
     intercept(request: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {
         const Authorization = this._request.cookies.token || '';
-        console.log({Authorization})
+        console.log({Authorization});
         request = request.clone({ headers: new HttpHeaders({ Authorization }) });
         return next.handle(request);
     }

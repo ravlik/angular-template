@@ -12,8 +12,9 @@ import * as fs from 'fs';
 import * as path from 'path';
 import * as bodyParser from 'body-parser';
 import * as sourceMap from 'source-map-support'; // for debug
-// import * as request from 'request';
-import { ROUTES } from './static.paths'; // static path from prerenders
+import * as request from 'request';
+import { ROUTES } from './static.paths';
+
 
 sourceMap.install(); // for test
 enableProdMode();
@@ -24,7 +25,7 @@ const template = fs.readFileSync(path.join(__dirname, '.', 'dist', 'index.html')
     mainFiles = files.filter((file) => file.startsWith('main')), // get server main
     hash = mainFiles[0].split('.')[1], // with hash
     { AppServerModuleNgFactory, LAZY_MODULE_MAP } = require(`./dist-server/main.${hash}`), // main from server impl.
-    PORT = process.env.PORT || 4000; // port
+    PORT = process.env.PORT || 3000; // port
 
 // not implemented property and functions
 Object.defineProperty(win.document.body.style, 'transform', {
@@ -39,40 +40,39 @@ global['CSS'] = null; // othres mock
 global['Prism'] = null; // global['XMLHttpRequest'] = require('xmlhttprequest').XMLHttpRequest;
 
 export function redirect(req, res, next) {
-    if (req.url === '/index.html') {
-        // for domain/index.html
-        return res.redirect(301, 'https://' + req.hostname);
-    }
+    // if (req.url === '/index.html') { //todo: add only in production
+    //     // for domain/index.html
+    //     return res.redirect(301, 'https://' + req.hostname);
+    // }
+    //
+    // if (req.headers['x-forwarded-proto'] !== 'https' &&
+    //     req.hostname !== 'localhost') {
+    //     // check if it is a secure (https) request
+    //     // if not redirect to the equivalent https url
+    //
+    //     if (req.url === '/robots.txt') {
+    //         // special for robots.txt
+    //         next();
+    //         return;
+    //     }
+    //     return res.redirect('https://' + req.hostname + req.url);
+    // }
 
-    if (req.headers['x-forwarded-proto'] !== 'https' &&
-        req.hostname !== 'localhost') {
-        // check if it is a secure (https) request
-        // if not redirect to the equivalent https url
-
-        if (req.url === '/robots.txt') {
-            // special for robots.txt
-            next();
-            return;
-        }
-        return res.redirect('https://' + req.hostname + req.url);
-    }
-
-    // if (redirectowww && !req.hostname.startsWith('www.')) {
+    // if (!req.hostname.startsWith('www.')) {
     //     res.redirect('https://www.' + req.hostname + req.url);
     // }
     //
-    // if (wwwredirecto && req.hostname.startsWith('www.')) {
+    // if (req.hostname.startsWith('www.')) {
     //     const host = req.hostname.slice(4, req.hostname.length);
     //     res.redirect('https://' + host + req.url);
     // }
-
+    //
     // // for test
     // if (test && req.url === '/test/exit') {
     //     res.send('exit');
     //     exit(0);
     //     return;
     // }
-
     next();
 }
 
@@ -116,6 +116,43 @@ export function render(req, res) {
     );
 }
 
+function login(req, res) {
+    console.log('req.body', req.body);
+
+    request({
+        method: 'POST',
+        uri: 'http://localhost:3003/login',
+        headers: {
+            'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(req.body),
+    }).on('data', function(data) {
+        const body = JSON.parse(data);
+
+        if (body)
+            res.cookie('token', body.access_token, { maxAge: body.expires_in * 1000, httpOnly: true });
+    }).pipe(res);
+}
+
+function auth(req, res, next) {
+    console.log('req.body', req.headers);
+
+    req.pipe(request({
+        method: 'POST',
+        uri: 'http://localhost:3003/introspect',
+        headers: {
+            'Content-Type': 'application/json',
+        },
+    }).on('response', function(response) {
+        // unmodified http.IncomingMessage object
+        if (response.statusCode === 200)
+            next();
+        else
+            res.redirect(`/account/error/${response.statusCode}`);
+    }));
+    // .pipe(res);
+}
+
 const app = express();
 
 app.engine(
@@ -128,14 +165,23 @@ app.engine(
 
 app.use(compression()); // gzip
 app.use(cookieparser()); // cokies
+app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json()); // create application/json parser
 app.use(redirect);
 
 app.set('view engine', 'html'); // must
 app.set('views', 'src');
 
+app.get('/test', (req, res) => {
+    res.send('Bearer 2');
+});
+
+app.post('/api/login', login);
+
 app.get('*.*', express.static(path.join(__dirname, '.', 'dist'))); // all search
 app.get(ROUTES, express.static(path.join(__dirname, '.', 'static'))); // static
+app.get('/dashboard', auth, render);
 app.get('*', render);
+
 
 app.listen(PORT, () => console.log(`listening on http://localhost:${PORT}!`));

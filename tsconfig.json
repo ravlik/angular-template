@@ -20,6 +20,9 @@
             ],
             "notifier": [
                 "app/notifier/index"
+            ],
+            "sentry": [
+                "app/sentry/index"
             ]
         },
         "outDir": "./dist/out-tsc",

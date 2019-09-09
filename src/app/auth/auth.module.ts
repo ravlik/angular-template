@@ -9,6 +9,7 @@ import { MatInputModule } from '@angular/material';
 import { MatCardModule } from '@angular/material/card';
 import { ForgotPasswordComponent } from './forgot-password/forgot-password.component';
 import { NewPasswordComponent } from './new-password/new-password.component';
+import { HttpClientModule } from '@angular/common/http';
 
 @NgModule({
     declarations: [
@@ -25,6 +26,7 @@ import { NewPasswordComponent } from './new-password/new-password.component';
         FormsModule,
         ReactiveFormsModule,
         MatCardModule,
+        HttpClientModule,
     ],
 })
 export class AuthModule {
