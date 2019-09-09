@@ -17,7 +17,7 @@ export const routes: Routes = [
     {
         path: ':id/edit',
         component: UserEditComponent,
-    },
+    }
 ];
 
 export const UserRoutes = RouterModule.forChild(routes);

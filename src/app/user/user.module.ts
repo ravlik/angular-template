@@ -5,7 +5,7 @@ import { UserRoutes } from './user.routing';
 import { UserDetailsComponent } from './user-details/user-details.component';
 import { UserEditComponent } from './user-edit/user-edit.component';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
-import { MatFormFieldModule, MatInputModule, MatCard, MatCardModule } from '@angular/material';
+import { MatFormFieldModule, MatInputModule, MatCardModule } from '@angular/material';
 
 @NgModule({
   imports: [

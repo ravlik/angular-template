@@ -1,7 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { UsersProvider, IUser } from 'communication';
-import { relative } from 'path';
 
 @Component({
     selector: 'app-user-details',
@@ -9,8 +8,8 @@ import { relative } from 'path';
     styleUrls: ['./user-details.component.scss']
 })
 export class UserDetailsComponent implements OnInit {
-    user: IUser;
-    id: number;
+    user: IUser = {} as any;
+    
     constructor(private _route: ActivatedRoute,
                 private _userProvider: UsersProvider,
                 private _router: Router) { }
@@ -18,25 +17,23 @@ export class UserDetailsComponent implements OnInit {
     ngOnInit() {
         this._route.params.subscribe(
             params => {
-                this.id = +params.id;
-                this._userProvider.getItemById(this.id).subscribe(
-                    (res: IUser) => {
-                        this.user = res;
-                        console.log(this.user);
-                    },
+                const id = +params.id;
+                this._userProvider.getItemById(id).subscribe(
+                    (res: IUser) =>  this.user = res,
                     er => console.error(er)
                 );
-            },
-            error => console.error(error)
+            }
         );
     }
 
     deleteUser(id: number) {
+        if (!id) 
+            return;
+        
         this._userProvider.deleteItem(id).subscribe(
-            res => {
-                console.log(res);
-                
-                this._router.navigate(['../'], {relativeTo: this._route});
+            res =>  this._router.navigate(['../'], {relativeTo: this._route}),
+            error => {
+                console.error(error);
             }
         );
     }

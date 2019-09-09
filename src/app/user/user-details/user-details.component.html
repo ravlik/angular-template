@@ -1,14 +1,16 @@
 <div class="wrapper">
     <mat-card class="form-container">
-        <h1>{{ user.id }}</h1>
-        <h1>{{ user.name }}</h1>
-        <h1>{{ user.password }}</h1>
-        <h1>{{ user.age }}</h1>
-        <mat-card-actions>
-            <button routerLink="./edit">Edit User</button>
-            <button (click)="deleteUser(id)" class="btn-cancel">Delete User</button>
-        </mat-card-actions>
+        <div class="card-top">
+            <button routerLink="../" class="btn-cancel" mat-stroked-button color="primary">Cancel</button>
+            <h1>User Details</h1>
 
+            <button routerLink="./edit" mat-stroked-button color="green" class="btn-edit">Edit User</button>
+            <button (click)="deleteUser(user.id)" class="btn-delete" mat-stroked-button color="warn">Delete User</button>
 
+        </div>
+        <h3>User ID: {{ user.id }}</h3>
+        <h3>User Name: {{ user.name }}</h3>
+        <h3>User Password: {{ user.password }}</h3>
+        <h3>User Date of Birth: {{ user.age | date }}</h3>
     </mat-card>
 </div>

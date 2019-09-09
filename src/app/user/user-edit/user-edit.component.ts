@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { Router, ActivatedRoute } from '@angular/router';
-import { UsersProvider } from 'communication';
+import { UsersProvider, IUser } from 'communication';
 import { FormGroup, FormControl, Validators } from '@angular/forms';
 
 @Component({
@@ -9,51 +9,58 @@ import { FormGroup, FormControl, Validators } from '@angular/forms';
     styleUrls: ['./user-edit.component.scss']
 })
 export class UserEditComponent implements OnInit {
+    user: IUser;
+    isCreateMood: boolean = true;
 
     constructor(private _router: Router,
-        private _route: ActivatedRoute,
-        private _userProvider: UsersProvider) { }
-    user;
-    userEditForm: FormGroup;
-    newUserName: string;
-    newUserPassword: string;
-    newUserAge: number;
-
+                private _route: ActivatedRoute,
+                private _userProvider: UsersProvider) { }
+    
+    userEditForm: FormGroup =  new FormGroup({
+        name: new FormControl(null, Validators.required),
+        password: new FormControl(null,
+            Validators.compose([Validators.required, Validators.minLength(3)])),
+        age: new FormControl(null, Validators.required),
+        id: new FormControl(null),
+    });
 
     ngOnInit() {
         this._route.params.subscribe(
             params => {
                 const id = +params.id;
-                console.log('user id --------', id);
-                this.user = this._userProvider.getItemById(id).subscribe(
-                    res => {
-                        this.user = res;
-                        console.log('user -------', this.user);
-                    },
-                    er => console.error(er)
-                );
-            },
-            error => console.error(error)
+                if (!isNaN(id)) {
+                    this.isCreateMood = false;
+                    this._userProvider.getItemById(id).subscribe(
+                        res => {
+                          this.user = res;
+                           this._initForm(res);
+                        },
+                        er => console.error(er)
+                    );
+                }
+            }
         );
-
-
-        this.userEditForm = new FormGroup({
-            userName: new FormControl(this.user.userName, Validators.required),
-            userPassword: new FormControl(this.user.Password,
-                Validators.compose([Validators.required, Validators.minLength(3), Validators.maxLength(10)])),
-            userAge: new FormControl(null)
-        });
-
     }
 
-    submitChanges(postData) {
-        console.log('this.userEditForm.value;', this.userEditForm.value);
+    private _initForm(user) {
+        return this.userEditForm.setValue(this.user);
+    }
 
-        console.log('updated user ---', this.user);
-        this._userProvider.updateItem(this.user).subscribe(
+    submitForm(postData) {
+        if (this.isCreateMood) {
+            this._userProvider.createItem(postData).subscribe(
+                res => {
+                    console.log(res);
+                this._router.navigate([`users/${res.id}`]);
+                },
+                er => console.error(er)
+            );
+            return ;
+        }
+        this._userProvider.updateItem(postData).subscribe(
             res => {
                 console.log(res);
-                this._router.navigate(['./', { relativeTo: this._route }]);
+                this._router.navigate(['../'], {relativeTo: this._route});
             },
             err => console.error(err)
         );

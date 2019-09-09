@@ -2,7 +2,7 @@ const BASE_ENVIRONMENT = {
     // for prerender
     host: 'http://localhost:4000',
     root: 'need override environment',
-    useMocks: false,
+    useMocks: true,
     credentials: {
         username: '',
         password: '',

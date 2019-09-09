@@ -1,25 +1,32 @@
-@import '@angular/material/prebuilt-themes/deeppurple-amber.css';
-
 .wrapper {
     width: 70%;
     padding-top: 30px;
     margin: 0 auto;
+
+    button {
+        width: 20%;
+        min-width: 40px;
+    }
+}
+
+.card-top,
+.user-edit-form {
+    display: flex;
+    flex-flow: row;
+    justify-content: space-between;
+    align-items: center;
 }
 
 .user-edit-form {
-    display: flex;
     flex-flow: column;
 }
-
-.mat-card-actions {
-    display: flex;
-    flex-flow: row wrap;
-    justify-content: space-between;
-
-    button {
-        width: 40%;
-    }
-    .btn-cancel {
-        background-color: red;
-    }
+.mat-form-field,
+.mat-form-actions {
+    width: 85%;
+}
+.btn-delete {
+    background-color: red;
+}
+.btn-edit {
+    background-color: green;
 }

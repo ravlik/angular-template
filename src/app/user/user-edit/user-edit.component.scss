@@ -1,2 +1,8 @@
-@import '@angular/material/prebuilt-themes/deeppurple-amber.css';
 @import '../user-details/user-details.component.scss';
+
+.form-actions {
+    display: flex;
+    flex-flow: row wrap;
+    justify-content: space-around;
+    width: 100%;
+}
