@@ -5,7 +5,7 @@ import { AppComponent } from './app.component';
 import { AppModule } from './app.module';
 import { ServiceWorkerModule } from '@angular/service-worker';
 import { StateTransferInitializerModule } from '@nguniversal/common';
-import { environment } from 'environments/server/environment';
+import { environment } from 'environment';
 import { BrowserFileModule } from './file-loader/browser/browser-file.module';
 import { TranslateService } from './translate';
 
