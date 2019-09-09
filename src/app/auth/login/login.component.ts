@@ -24,6 +24,7 @@ export class LoginComponent extends FormComponent {
     };
 
     protected submitRequest(): Observable<any> {
+        // return this.http.post('api/login', this.form.value);
         if (this.form.value.username === '111' && this.form.value.password === '111') {
             return of(this.form.value);
         }
@@ -32,12 +33,12 @@ export class LoginComponent extends FormComponent {
 
     protected createForm(): FormGroup {
         return this.formBuilder.group({
-            username: new FormControl('', [
+            username: new FormControl('111', [
                 Validators.required,
                 Validators.minLength(3),
                 Validators.maxLength(50),
             ]),
-            password: new FormControl('', [
+            password: new FormControl('111', [
                 Validators.required,
                 Validators.minLength(3),
                 Validators.maxLength(50),

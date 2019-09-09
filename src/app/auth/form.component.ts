@@ -4,6 +4,7 @@ import { NotifierService } from '../notifier/notifier.service';
 import { ActivatedRoute } from '@angular/router';
 import { Observable } from 'rxjs';
 import { AppConfig } from '../app.config';
+import { HttpClient } from '@angular/common/http';
 
 export interface IErrorMessage {
     [error: string]: string;
@@ -24,6 +25,7 @@ export abstract class FormComponent implements OnInit {
     constructor(@Inject(FormBuilder) protected formBuilder: FormBuilder,
                 @Inject(NotifierService) protected notifier: NotifierService,
                 @Inject(AppConfig) private _communicationConfig: AppConfig,
+                @Inject(HttpClient) protected http: HttpClient,
                 @Inject(ActivatedRoute) private route: ActivatedRoute) {
     }
 
