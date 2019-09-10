@@ -6,12 +6,10 @@ describe('Fake provider', () => {
 
     beforeEach(() => {
         provider = new class extends FakeProvider<any> {
-            constructor() {
-                super();
-                this._delay = 0;
-                for (let id = 1; id <= 100; id++) {
-                    this._store[id] = { id };
-                }
+            _delay = 0;
+
+            protected _getItems(): any[] {
+                return new Array(100).fill('').map(id => ({ id }));
             }
         };
     });

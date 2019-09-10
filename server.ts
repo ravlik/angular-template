@@ -25,7 +25,7 @@ const template = fs.readFileSync(path.join(__dirname, '.', 'dist', 'index.html')
     mainFiles = files.filter((file) => file.startsWith('main')), // get server main
     hash = mainFiles[0].split('.')[1], // with hash
     { AppServerModuleNgFactory, LAZY_MODULE_MAP } = require(`./dist-server/main.${hash}`), // main from server impl.
-    PORT = process.env.PORT || 3000; // port
+    PORT = process.env.PORT || 4000; // port
 
 // not implemented property and functions
 Object.defineProperty(win.document.body.style, 'transform', {

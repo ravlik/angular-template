@@ -157,7 +157,7 @@
                     "builder": "@angular-devkit/build-angular:protractor",
                     "options": {
                         "protractorConfig": "./protractor.conf.js",
-                        "devServerTarget": "universal-demo:serve"
+                        "devServerTarget": "universal-demo:serve:dev"
                     }
                 },
                 "lint": {
